@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",
+    "@tiptap/extension-text-style": "^3.5.1",
     "@tiptap/pm": "^3.5.1",
     "@tiptap/react": "^3.5.1",
     "@tiptap/starter-kit": "^3.5.1",

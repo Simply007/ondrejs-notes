@@ -3,8 +3,9 @@ import CKEditorArea from './CKEditorArea';
 import TextArea from './TextArea';
 
 import './RichText.css';
+import TipTapArea from './TipTapArea';
 
-type EditorType = 'CKEditor' | 'TextArea';
+type EditorType = 'CKEditor' | 'TipTap' | 'TextArea';
 
 export default function RichText({
     documentId,
@@ -26,12 +27,19 @@ export default function RichText({
                 <label htmlFor="editor-type">Editor Type:</label>
                 <select id="editor-type" value={editorType} onChange={handleEditorTypeChange}>
                     <option value="CKEditor">CKEditor</option>
+                    <option value="TipTap">TipTap</option>
                     <option value="TextArea">TextArea</option>
                 </select>
             </div>
 
             {editorType === 'CKEditor' ? (
                 <CKEditorArea
+                    documentId={documentId}
+                    content={content}
+                    onChange={onChange}
+                />
+            ) : editorType === 'TipTap' ? (
+                <TipTapArea
                     documentId={documentId}
                     content={content}
                     onChange={onChange}
