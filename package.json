@@ -15,6 +15,9 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",
+    "@tiptap/pm": "^3.5.1",
+    "@tiptap/react": "^3.5.1",
+    "@tiptap/starter-kit": "^3.5.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^6.30.1"
