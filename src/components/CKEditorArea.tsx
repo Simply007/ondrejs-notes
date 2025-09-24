@@ -51,6 +51,9 @@ export default function CKEditorArea({
     const editorRevisionHistoryEditorRef = useRef(null);
     const editorRevisionHistorySidebarRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
+    const [hasConflict, setHasConflict] = useState(false);
+    const editorInstanceRef = useRef<any>(null);
+    const collaborativeContentRef = useRef<string>('');
     const cloud = useCKEditorCloud({ version: '45.1.0', premium: true });
 
     useEffect(() => {
@@ -284,15 +287,96 @@ export default function CKEditorArea({
         };
     }, [cloud, isLayoutReady, content, documentId]);
 
+    const handleConflictResolution = (useCollaborative: boolean) => {
+        if (editorInstanceRef.current) {
+            if (useCollaborative) {
+                // Use collaborative version - update parent with collaborative content
+                onChange(collaborativeContentRef.current);
+            } else {
+                // Update collaborative version with local content
+                // editorInstanceRef.current.setData(content, { suppressErrorInCollaboration: true });
+                // https://ckeditor.com/docs/ckeditor5/latest/support/error-codes.html#error-realtimecollaborationclient-editor-setdata-and-editor-data-set-are-forbidden-in-real-time-collaboration
+                editorInstanceRef.current.data.set(content, { suppressErrorInCollaboration: true });
+            }
+        }
+        setHasConflict(false);
+    };
+
     return (
         <>
+            {hasConflict && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 10000
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        maxWidth: '500px',
+                        textAlign: 'center'
+                    }}>
+                        <h3>Content Conflict Detected</h3>
+                        <p>There are differences between your local changes and the collaborative version.</p>
+                        <p>What would you like to do?</p>
+                        <div style={{ marginTop: '20px' }}>
+                            <button
+                                onClick={() => handleConflictResolution(true)}
+                                style={{
+                                    margin: '10px',
+                                    padding: '10px 20px',
+                                    backgroundColor: '#007cba',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Load Last Collaborative Version
+                            </button>
+                            <button
+                                onClick={() => handleConflictResolution(false)}
+                                style={{
+                                    margin: '10px',
+                                    padding: '10px 20px',
+                                    backgroundColor: '#dc3545',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Replace Collaborative Version with Local Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="presence" ref={editorPresenceRef}></div>
             <div className="editor-container editor-container_classic-editor" ref={editorContainerRef}>
                 <div className="editor-container__editor">
                     <div ref={editorRef}>{ClassicEditor && editorConfig && <CKEditor
                         editor={ClassicEditor}
                         config={editorConfig}
-                        onChange={(_event: any, editor: any) => {
+                        onReady={(editor) => {
+                            editorInstanceRef.current = editor;
+                            const collaborativeContent = editor.getData();
+                            collaborativeContentRef.current = collaborativeContent;
+
+                            // Check if there's a conflict between local content and collaborative content
+                            if (content && collaborativeContent && content !== collaborativeContent && content.trim() !== '' && collaborativeContent.trim() !== '') {
+                                setHasConflict(true);
+                            }
+                        }}
+                        onChange={(_event, editor) => {
                             const data = editor.getData();
                             onChange(data);
                         }}
