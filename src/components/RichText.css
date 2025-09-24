@@ -18,6 +18,46 @@
 	margin-bottom: 8px;
 }
 
+.editor-selector {
+	margin-bottom: 16px;
+	padding: 8px 0;
+}
+
+.editor-selector label {
+	margin-right: 8px;
+	font-weight: 500;
+	color: #333;
+}
+
+.editor-selector select {
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: white;
+	font-family: 'Lato';
+	font-size: 14px;
+	color: #333;
+}
+
+.textarea-editor {
+	width: 100%;
+	min-height: 400px;
+	padding: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-family: 'Lato';
+	font-size: 14px;
+	line-height: 1.6;
+	resize: vertical;
+	box-sizing: border-box;
+}
+
+.textarea-editor:focus {
+	outline: none;
+	border-color: #0066cc;
+	box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
 .ck-content {
 	font-family: 'Lato';
 	line-height: 1.6;
