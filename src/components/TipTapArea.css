@@ -1,0 +1,23 @@
+.control-group .button-group button {
+  background-color: white;
+  color: #222;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-right: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+.control-group .button-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.control-group .button-group button.is-active {
+  background-color: #646cff;
+  color: white;
+}

@@ -6,6 +6,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { CKEditor, useCKEditorCloud } from '@ckeditor/ckeditor5-react';
 
+import './CKEditorArea.css';
+
 const LICENSE_KEY = import.meta.env.VITE_CK_EDITOR_LICENSE_KEY;
 if (!LICENSE_KEY) {
     alert('Missing VITE_CK_EDITOR_LICENSE_KEY key - CKEditor will not work.');

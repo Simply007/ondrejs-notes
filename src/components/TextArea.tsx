@@ -1,3 +1,5 @@
+import './TextArea.css'
+
 export default function TextArea({
     documentId,
     content,

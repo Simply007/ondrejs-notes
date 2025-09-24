@@ -32,25 +32,27 @@ export default function RichText({
                 </select>
             </div>
 
-            {editorType === 'CKEditor' ? (
-                <CKEditorArea
-                    documentId={documentId}
-                    content={content}
-                    onChange={onChange}
-                />
-            ) : editorType === 'TipTap' ? (
-                <TipTapArea
-                    documentId={documentId}
-                    content={content}
-                    onChange={onChange}
-                />
-            ) : (
-                <TextArea
-                    documentId={documentId}
-                    content={content}
-                    onChange={onChange}
-                />
-            )}
+            <div className="editor-container">
+                {editorType === 'CKEditor' ? (
+                    <CKEditorArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'TipTap' ? (
+                    <TipTapArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : (
+                    <TextArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                )}
+            </div>
         </div>
     );
 }

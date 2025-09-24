@@ -2,6 +2,7 @@ import { useEditor, EditorContent, Editor, useEditorState } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { TextStyleKit } from '@tiptap/extension-text-style'
 
+import './TipTapArea.css';
 
 
 function MenuBar({ editor }: { editor: Editor }) {
@@ -159,11 +160,6 @@ export default function Tiptap({
 
     const editor = useEditor({
         extensions: [TextStyleKit, StarterKit], // define your extension array
-        editorProps: {
-            attributes: {
-                class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none',
-            },
-        },
         content: content, // initial content
         onUpdate: ({ editor }) => {
             const newContent = editor.getHTML();
