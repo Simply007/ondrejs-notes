@@ -1,6 +1,44 @@
 import { useEditor, EditorContent, Editor, useEditorState } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { TextStyleKit } from '@tiptap/extension-text-style'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import HardBreak from '@tiptap/extension-hard-break'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import Bold from '@tiptap/extension-bold'
+import Italic from '@tiptap/extension-italic'
+import Strike from '@tiptap/extension-strike'
+import Code from '@tiptap/extension-code'
+import Blockquote from '@tiptap/extension-blockquote'
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
+import Heading from '@tiptap/extension-heading'
+import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
+import { Table } from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import Placeholder from '@tiptap/extension-placeholder'
+import CharacterCount from '@tiptap/extension-character-count'
+import History from '@tiptap/extension-history'
+import Typography from '@tiptap/extension-typography'
+import { TextStyle } from '@tiptap/extension-text-style'
+import Highlight from '@tiptap/extension-highlight'
+import Underline from '@tiptap/extension-underline'
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
+import Dropcursor from '@tiptap/extension-dropcursor'
+import Gapcursor from '@tiptap/extension-gapcursor'
+import Youtube from '@tiptap/extension-youtube'
+import CodeBlock from '@tiptap/extension-code-block'
+import Mention from '@tiptap/extension-mention'
+import Color from '@tiptap/extension-color'
+import FontFamily from '@tiptap/extension-font-family'
+import TextAlign from '@tiptap/extension-text-align'
+
 
 import './TipTapArea.css';
 
@@ -33,6 +71,16 @@ function MenuBar({ editor }: { editor: Editor }) {
         isBlockquote: ctx.editor.isActive('blockquote') ?? false,
         canUndo: ctx.editor.can().chain().undo().run() ?? false,
         canRedo: ctx.editor.can().chain().redo().run() ?? false,
+        isTable: ctx.editor.isActive('table') ?? false,
+        canTable: ctx.editor.can().chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run() ?? false,
+        isTaskList: ctx.editor.isActive('taskList') ?? false,
+        canTaskList: ctx.editor.can().chain().toggleTaskList().run() ?? false,
+        isImage: ctx.editor.isActive('image') ?? false,
+        canImage: ctx.editor.can().chain().setImage({ src: 'https://example.com/image.jpg' }).run() ?? false,
+        isLink: ctx.editor.isActive('link') ?? false,
+        canLink: ctx.editor.can().chain().toggleLink({ href: 'https://example.com' }).run() ?? false,
+        isYoutube: ctx.editor.isActive('youtube') ?? false,
+        canYoutube: ctx.editor.can().chain().focus().setYoutubeVideo({ src: 'https://youtu.be/3lTUAWOgoHs' }).run() ?? false,
       }
     },
   })
@@ -125,10 +173,64 @@ function MenuBar({ editor }: { editor: Editor }) {
           Ordered list
         </button>
         <button
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
+          disabled={!editorState.canTaskList}
+          className={editorState.isTaskList ? 'is-active' : ''}
+        >
+          Task list
+        </button>
+        <button
+          onClick={() => {
+            const previousUrl = editor.getAttributes('link').href || '';
+            const url = window.prompt('Enter link URL', previousUrl);
+            if (url === null) return;
+            if (url === '') {
+              editor.chain().focus().unsetLink().run();
+              return;
+            }
+            editor.chain().focus().setLink({ href: url }).run();
+          }}
+          disabled={!editorState.canLink}
+          className={editorState.isLink ? 'is-active' : ''}
+        >
+          Link
+        </button>
+        <button
+          onClick={() => {
+            const url = window.prompt('Enter image URL');
+            if (url) {
+              editor.chain().focus().setImage({ src: url }).run();
+            }
+          }}
+          disabled={!editorState.canImage}
+          className={editorState.isImage ? 'is-active' : ''}
+        >
+          Image
+        </button>
+        <button
+          onClick={() => {
+            const url = window.prompt('Enter YouTube URL');
+            if (url) {
+              editor.chain().focus().setYoutubeVideo({ src: url }).run();
+            }
+          }}
+          disabled={!editorState.canYoutube}
+          className={editorState.isYoutube ? 'is-active' : ''}
+        >
+          Youtube
+        </button>
+        <button
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={editorState.isCodeBlock ? 'is-active' : ''}
         >
           Code block
+        </button>
+        <button
+          onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+          disabled={!editorState.canTable}
+          className={editorState.isTable ? 'is-active' : ''}
+        >
+          Table
         </button>
         <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -150,28 +252,60 @@ function MenuBar({ editor }: { editor: Editor }) {
 }
 
 export default function Tiptap({
-    documentId,
-    content,
-    onChange }: {
-        documentId: string,
-        content: string,
-        onChange: (newContent: string) => void
-    }) {
+  documentId,
+  content,
+  onChange }: {
+    documentId: string,
+    content: string,
+    onChange: (newContent: string) => void
+  }) {
 
-    const editor = useEditor({
-        extensions: [TextStyleKit, StarterKit], // define your extension array
-        content: content, // initial content
-        onUpdate: ({ editor }) => {
-            const newContent = editor.getHTML();
-            onChange(newContent);
-        },
+  const editor = useEditor({
+    extensions: [
+      Document, Paragraph, Text, HardBreak, HorizontalRule,
+      Bold, Italic, Strike, Code, Blockquote,
+      BulletList, OrderedList, ListItem,
+      Heading.configure({ levels: [1, 2, 3] }),
+      Link, Image,
+      TaskList, TaskItem,
+      Table.configure({ resizable: true }),
+      TableRow, TableCell, TableHeader,
+      Placeholder.configure({ placeholder: 'Type something...' }),
+      CharacterCount.configure({ limit: 2000 }),
+      History, Typography,
+      TextStyle, Highlight.configure({ multicolor: true }), Underline, Subscript, Superscript,
+      Dropcursor, Gapcursor, Youtube, CodeBlock,
+      Mention.configure(
+        {
+          HTMLAttributes: { class: 'mention' },
+          suggestion: {
+            items: () => [],
+            render: () => ({
+              onStart: () => { },
+              onUpdate: () => { },
+              onKeyDown: () => false,
+              onExit: () => { },
+            }),
+          },
+          renderText: ({ node }) => `@${node.attrs.label || node.attrs.id}`
+        }
+      ),
+      Color,
+      FontFamily,
+      TextAlign.configure({ types: ['heading', 'paragraph'] })
+    ], // define your extension array
+    content: content, // initial content
+    onUpdate: ({ editor }) => {
+      const newContent = editor.getHTML();
+      onChange(newContent);
+    },
 
-    })
+  })
 
-    return (
-        <div data-document-id={documentId}>
-            <MenuBar editor={editor} />
-            <EditorContent editor={editor} />
-        </div>
-    )
+  return (
+    <div data-document-id={documentId} className='editor-wrapper'>
+      <MenuBar editor={editor} />
+      <EditorContent editor={editor} />
+    </div>
+  )
 }
