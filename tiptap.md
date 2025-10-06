@@ -70,3 +70,12 @@ Aim to use case:
 * Record the gifs/process
 
 For keyword "TipTap alternative": https://www.tiny.cloud/tinymce-vs-tiptap/ => this is for comparison page
+
+
+Features:
+
+* HTML support
+* sourceEditing -> allowCollaborationFeatures: true
+* fontFamily -> supportAllValues: true
+* Checklists - work from TipTap, but not back (Ask Kacper)
+* 
