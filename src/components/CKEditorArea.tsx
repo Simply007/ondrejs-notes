@@ -71,26 +71,66 @@ export default function CKEditorArea({
 
         const {
             ClassicEditor,
+            Alignment,
+            AutoImage,
             AutoLink,
             Autosave,
+            BlockQuote,
             Bold,
+            Bookmark,
             CloudServices,
             Code,
             CodeBlock,
             Essentials,
             FindAndReplace,
+            FontBackgroundColor,
+            FontColor,
+            FontFamily,
+            FontSize,
+            GeneralHtmlSupport,
             Heading,
+            Highlight,
             HorizontalLine,
+            ImageBlock,
+            ImageCaption,
+            ImageEditing,
+            ImageInline,
+            ImageInsertViaUrl,
+            ImageResize,
+            ImageStyle,
+            ImageTextAlternative,
+            ImageToolbar,
+            ImageUpload,
+            ImageUtils,
+            Indent,
+            IndentBlock,
             Italic,
             Link,
+            LinkImage,
             List,
             ListProperties,
+            Markdown,
+            MediaEmbed,
+            Mention,
             Paragraph,
+            PasteFromMarkdownExperimental,
+            PasteFromOffice,
+            RemoveFormat,
+            SourceEditing,
             Strikethrough,
+            Style,
             Subscript,
             Superscript,
+            Table,
+            TableCaption,
+            TableCellProperties,
+            TableColumnResize,
+            TableProperties,
+            TableToolbar,
             TodoList,
-            Underline
+            Underline,
+            // TODO: Custom/extra
+            // Plugin
         } = cloud.CKEditor;
         const {
             AIAssistant,
@@ -122,6 +162,12 @@ export default function CKEditorArea({
                         'findAndReplace',
                         '|',
                         'heading',
+                        'style',
+                        '|',
+                        'fontSize',
+                        'fontFamily',
+                        'fontColor',
+                        'fontBackgroundColor',
                         '|',
                         'bold',
                         'italic',
@@ -133,45 +179,99 @@ export default function CKEditorArea({
                         '|',
                         'horizontalLine',
                         'link',
+                        'insertTable',
                         'codeBlock',
+                        'insertImageViaUrl',
+                        'mediaEmbed',
+                        '-',
+                        'highlight',
+                        'blockQuote',
+                        '|',
+                        'alignment',
                         '|',
                         'bulletedList',
                         'numberedList',
                         'multiLevelList',
-                        'todoList'
+                        'todoList',
+                        'outdent',
+                        'indent'
                     ],
                     shouldNotGroupWhenFull: true
                 },
                 plugins: [
+                    // Premium features
                     AIAssistant,
-                    AutoLink,
-                    Autosave,
-                    Bold,
-                    CloudServices,
-                    Code,
-                    CodeBlock,
-                    Essentials,
                     ExportPdf,
-                    FindAndReplace,
                     FormatPainter,
-                    Heading,
-                    HorizontalLine,
-                    Italic,
-                    Link,
-                    List,
-                    ListProperties,
                     MultiLevelList,
                     OpenAITextAdapter,
-                    Paragraph,
                     PresenceList,
                     RealTimeCollaborativeEditing,
                     RealTimeCollaborativeRevisionHistory,
                     RevisionHistory,
+                    // Core features
+                    Alignment,
+                    AutoImage,
+                    AutoLink,
+                    Autosave,
+                    BlockQuote,
+                    Bold,
+                    Bookmark,
+                    CloudServices,
+                    Code,
+                    CodeBlock,
+                    Essentials,
+                    FindAndReplace,
+                    FontBackgroundColor,
+                    FontColor,
+                    FontFamily,
+                    FontSize,
+                    GeneralHtmlSupport,
+                    Heading,
+                    Highlight,
+                    HorizontalLine,
+                    ImageBlock,
+                    ImageCaption,
+                    ImageEditing,
+                    ImageInline,
+                    ImageInsertViaUrl,
+                    ImageResize,
+                    ImageStyle,
+                    ImageTextAlternative,
+                    ImageToolbar,
+                    ImageUpload,
+                    ImageUtils,
+                    Indent,
+                    IndentBlock,
+                    Italic,
+                    Link,
+                    LinkImage,
+                    List,
+                    ListProperties,
+                    ...(import.meta.env.VITE_CKEDITOR_USE_MARKDOWN === 'true'
+                        ? [Markdown]
+                        : []),
+                    MediaEmbed,
+                    Mention,
+                    Paragraph,
+                    PasteFromMarkdownExperimental,
+                    PasteFromOffice,
+                    RemoveFormat,
                     Strikethrough,
+                    Style,
+                    SourceEditing,
                     Subscript,
                     Superscript,
+                    Table,
+                    TableCaption,
+                    TableCellProperties,
+                    TableColumnResize,
+                    TableProperties,
+                    TableToolbar,
                     TodoList,
-                    Underline
+                    Underline,
+                    // TODO: Custom/extra
+                    // SupportTiptapMention
                 ],
                 ai: {
                     openAI: {
@@ -251,6 +351,28 @@ export default function CKEditorArea({
                         }
                     ]
                 },
+                htmlSupport: {
+                    allow: [
+                        // Handle Tiptap YouTube videos. You can add additional attributes if you use non-default extension configuration.
+                        { name: 'div', attributes: 'data-youtube-video' },
+                        { name: 'iframe', attributes: { src: true, width: true, height: true, allowfullscreen: true, frameborder: true } },
+                        // Handle Tiptap code blocks
+                        { name: 'pre' },
+                        { name: 'code', classes: true },
+                        // Handle Tiptap highlight
+                        { name: 'mark', styles: 'background-color', attributes: 'data-color' },
+                        // Handle Tiptap text style
+                        { name: 'span', styles: true },
+                        // Handle classes on elements
+                        { name: /.*/, classes: true },
+                        // Handle Tiptap details extension
+                        { name: 'details', classes: true },
+                        { name: 'summary', classes: true }
+                    ]
+                },
+                fontFamily: {
+                    supportAllValues: true
+                },
                 initialData: content,
                 licenseKey: LICENSE_KEY,
                 link: {
@@ -283,9 +405,11 @@ export default function CKEditorArea({
                     viewerEditorElement: editorRevisionHistoryEditorRef.current,
                     viewerSidebarContainer: editorRevisionHistorySidebarRef.current,
                     resumeUnsavedRevision: true
+                },
+                sourceEditing: {
+                    allowCollaborationFeatures: true
                 }
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } as any
+            } as EditorConfig
         };
     }, [cloud, isLayoutReady, content, documentId]);
 
