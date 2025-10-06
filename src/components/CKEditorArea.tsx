@@ -409,7 +409,8 @@ export default function CKEditorArea({
                 sourceEditing: {
                     allowCollaborationFeatures: true
                 }
-            } as EditorConfig
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any
         };
     }, [cloud, isLayoutReady, content, documentId]);
 
