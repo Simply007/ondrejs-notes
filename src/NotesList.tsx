@@ -64,7 +64,7 @@ export default function NotesList() {
 
     const updatedNote = {
       ...note,
-      ckEditorContent: note.content,
+      ckEditorContent: note.content || '', // Copy Tiptap content as starting point, convert null to empty string
       modified: Date.now(),
     };
 

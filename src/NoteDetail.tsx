@@ -44,7 +44,7 @@ export default function NoteDetail() {
 
     const updatedNote = {
       ...note,
-      ckEditorContent: note.content, // Copy Tiptap content as starting point
+      ckEditorContent: note.content || '', // Copy Tiptap content as starting point, convert null to empty string
       modified: Date.now(),
     };
 
