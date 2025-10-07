@@ -1,54 +1,76 @@
-import { useState } from 'react';
 import CKEditorArea from './CKEditorArea';
-import TextArea from './TextArea';
-
-import './RichText.css';
 import TipTapArea from './TipTapArea';
+import './RichText.css';
 
-type EditorType = 'CKEditor' | 'TipTap' | 'TextArea';
+type EditorType = 'TipTap' | 'CKEditor';
 
 export default function RichText({
     documentId,
     content,
-    onChange }: {
-        documentId: string,
-        content: string,
-        onChange: (newContent: string) => void
-    }) {
-    const [editorType, setEditorType] = useState<EditorType>('CKEditor');
-
-    const handleEditorTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setEditorType(event.target.value as EditorType);
-    };
-
-    return (
-        <div className="main-container">
-            <div className="editor-selector">
-                <label htmlFor="editor-type">Editor Type:</label>
-                <select id="editor-type" value={editorType} onChange={handleEditorTypeChange}>
-                    <option value="CKEditor">CKEditor</option>
-                    <option value="TipTap">TipTap</option>
-                    <option value="TextArea">TextArea</option>
-                </select>
-            </div>
-
-            <div className="editor-container">
-                {editorType === 'CKEditor' ? (
-                    <CKEditorArea
-                        documentId={documentId}
-                        content={content}
-                        onChange={onChange}
-                    />
-                ) : editorType === 'TipTap' ? (
+    ckEditorContent,
+    isMigrated,
+    selectedEditor,
+    onEditorChange,
+    onChange
+}: {
+    documentId: string,
+    content: string,
+    ckEditorContent?: string,
+    isMigrated: boolean,
+    selectedEditor: EditorType,
+    onEditorChange: (editor: EditorType) => void,
+    onChange: (newContent: string) => void
+}) {
+    // Non-migrated notes: TipTap only
+    if (!isMigrated) {
+        return (
+            <div className="main-container">
+                <div className="editor-container">
                     <TipTapArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}
                     />
-                ) : (
-                    <TextArea
+                </div>
+            </div>
+        );
+    }
+
+    // Migrated notes: Show dropdown and appropriate editor
+    return (
+        <div className="main-container">
+            <div className="editor-selector">
+                <label htmlFor="editor-type">Editor Type:</label>
+                <select
+                    id="editor-type"
+                    value={selectedEditor}
+                    onChange={(e) => onEditorChange(e.target.value as EditorType)}
+                >
+                    <option value="TipTap">TipTap (Original - Read Only)</option>
+                    <option value="CKEditor">CKEditor</option>
+                </select>
+            </div>
+
+            {selectedEditor === 'TipTap' && (
+                <div className="migration-warning">
+                    ⚠️ This content has been migrated to CKEditor.
+                    The TipTap version is read-only.
+                    Switch to CKEditor to edit the current version.
+                </div>
+            )}
+
+            <div className="editor-container">
+                {selectedEditor === 'TipTap' ? (
+                    <TipTapArea
                         documentId={documentId}
                         content={content}
+                        onChange={() => {}} // Read-only
+                        readOnly={true}
+                    />
+                ) : (
+                    <CKEditorArea
+                        documentId={documentId}
+                        content={ckEditorContent || content}
                         onChange={onChange}
                     />
                 )}

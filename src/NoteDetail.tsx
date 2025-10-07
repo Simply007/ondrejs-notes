@@ -8,6 +8,7 @@ export default function NoteDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [note, setNote] = useState<Note | undefined>();
+  const [selectedEditor, setSelectedEditor] = useState<'TipTap' | 'CKEditor'>('TipTap');
 
   useEffect(() => {
     if(!id) {
@@ -22,31 +23,70 @@ export default function NoteDetail() {
         // The title is not shared - you can have your own naming
         title: '[SHARED] New note',
         // Leave this empty - the content will be loaded based on the ID from CKEditor server
-        content: '', 
+        content: '',
         created: now,
         modified: now,
       };
       setNote(new_note);
     } else {
       setNote(found);
+      // If note is migrated, default to CKEditor view
+      if (found.ckEditorContent) {
+        setSelectedEditor('CKEditor');
+      }
     }
   }, [id, navigate]);
 
-  const handleChange = (field: keyof Note, value: string) => {
-    if (!note) return;
+  const handleMigrateToCKEditor = () => {
+    if (!note || !window.confirm('Migrate this note to CKEditor? The original TipTap content will be preserved as read-only.')) {
+      return;
+    }
+
     const updatedNote = {
       ...note,
-      [field]: field === 'title' ? value.slice(0, 200) : value,
+      ckEditorContent: note.content, // Copy TipTap content as starting point
       modified: Date.now(),
     };
+
     setNote(updatedNote);
-    
-    const exists = (notes: Note[], quid: string) => notes.some(n => n.guid === quid)
-    const currentNotes = getNotes()
+
+    const currentNotes = getNotes();
+    const newNotes = currentNotes.map((n: Note) => n.guid === note.guid ? updatedNote : n);
+    saveNotes(newNotes);
+
+    setSelectedEditor('CKEditor');
+  };
+
+  const handleChange = (field: keyof Note, value: string) => {
+    if (!note) return;
+
+    let updatedNote: Note;
+    if (field === 'content') {
+      const contentField = note.ckEditorContent && selectedEditor === 'CKEditor'
+        ? 'ckEditorContent'
+        : 'content';
+
+      updatedNote = {
+        ...note,
+        [contentField]: value,
+        modified: Date.now(),
+      };
+    } else {
+      updatedNote = {
+        ...note,
+        [field]: field === 'title' ? value.slice(0, 200) : value,
+        modified: Date.now(),
+      };
+    }
+
+    setNote(updatedNote);
+
+    const exists = (notes: Note[], guid: string) => notes.some(n => n.guid === guid);
+    const currentNotes = getNotes();
 
     const newNotes = exists(currentNotes, note.guid)
       ? currentNotes.map((n: Note) => (n.guid === note.guid ? updatedNote : n))
-      : [...currentNotes, updatedNote]
+      : [...currentNotes, updatedNote];
 
     saveNotes(newNotes);
   };
@@ -56,6 +96,19 @@ export default function NoteDetail() {
   return (
     <div className="note-detail-container">
       <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+
+      {/* Show migrate button only for non-migrated notes */}
+      {!note.ckEditorContent && (
+        <div className="migration-controls">
+          <button
+            className="migrate-btn"
+            onClick={handleMigrateToCKEditor}
+          >
+            Migrate to CKEditor
+          </button>
+        </div>
+      )}
+
       <div className="note-detail-form">
         <input
           className="note-title-input"
@@ -65,11 +118,17 @@ export default function NoteDetail() {
           placeholder="Title"
           onChange={(e) => handleChange('title', e.target.value)}
         />
+
         <RichText
           documentId={id || generateGUID()}
           content={note.content}
+          ckEditorContent={note.ckEditorContent}
+          isMigrated={!!note.ckEditorContent}
+          selectedEditor={selectedEditor}
+          onEditorChange={setSelectedEditor}
           onChange={(content) => handleChange('content', content)}
         />
+
         <div className="note-timestamps">
           <small>Created: {new Date(note.created).toLocaleString()}</small>
           <small>Last modified: {new Date(note.modified).toLocaleString()}</small>

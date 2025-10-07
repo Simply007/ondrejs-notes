@@ -254,10 +254,13 @@ function MenuBar({ editor }: { editor: Editor }) {
 export default function Tiptap({
   documentId,
   content,
-  onChange }: {
+  onChange,
+  readOnly = false
+}: {
     documentId: string,
     content: string,
-    onChange: (newContent: string) => void
+    onChange: (newContent: string) => void,
+    readOnly?: boolean
   }) {
 
   const editor = useEditor({
@@ -295,16 +298,19 @@ export default function Tiptap({
       TextAlign.configure({ types: ['heading', 'paragraph'] })
     ], // define your extension array
     content: content, // initial content
+    editable: !readOnly,
     onUpdate: ({ editor }) => {
-      const newContent = editor.getHTML();
-      onChange(newContent);
+      if (!readOnly) {
+        const newContent = editor.getHTML();
+        onChange(newContent);
+      }
     },
 
   })
 
   return (
     <div data-document-id={documentId} className='editor-wrapper'>
-      <MenuBar editor={editor} />
+      {!readOnly && <MenuBar editor={editor} />}
       <EditorContent editor={editor} />
     </div>
   )
