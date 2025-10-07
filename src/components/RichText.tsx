@@ -1,5 +1,5 @@
 import CKEditorArea from './CKEditorArea';
-import TiptapArea from './xTiptapArea';
+import TiptapArea from './TiptapArea';
 import './RichText.css';
 
 type EditorType = 'Tiptap' | 'CKEditor';
