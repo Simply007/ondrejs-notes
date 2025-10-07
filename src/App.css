@@ -54,6 +54,10 @@
   align-items: center;
   margin-bottom: 2rem;
 }
+.new-note-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
 .new-note-btn {
   background: #fbbc04;
   color: #222;
@@ -67,6 +71,20 @@
 }
 .new-note-btn:hover {
   background: #ffe082;
+}
+.new-note-btn.tiptap {
+  background: #e0e0e0;
+  color: #333;
+}
+.new-note-btn.tiptap:hover {
+  background: #bdbdbd;
+}
+.new-note-btn.ckeditor {
+  background: #007cba;
+  color: white;
+}
+.new-note-btn.ckeditor:hover {
+  background: #005a8c;
 }
 .notes-tiles {
   display: grid;
@@ -91,16 +109,47 @@
 .note-tile-content {
   flex: 1;
 }
+.note-tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 .note-tile h2 {
   font-size: 1.1rem;
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   font-weight: 600;
   color: #333;
+  flex: 1;
+}
+.editor-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.editor-badge.ckeditor {
+  background: #007cba;
+  color: white;
+}
+.editor-badge.tiptap {
+  background: #e0e0e0;
+  color: #666;
 }
 .note-preview {
   color: #666;
   font-size: 0.95rem;
   margin: 0;
+}
+.note-tile-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
 }
 .delete-btn {
   background: #e57373;
@@ -110,12 +159,23 @@
   padding: 0.3rem 1rem;
   font-size: 0.9rem;
   cursor: pointer;
-  align-self: flex-end;
-  margin-top: 0.5rem;
   transition: background 0.2s;
 }
 .delete-btn:hover {
   background: #c62828;
+}
+.migrate-btn-small {
+  background: #007cba;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 0.3rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.migrate-btn-small:hover {
+  background: #005a8c;
 }
 
 /* Note Detail Styles */

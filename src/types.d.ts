@@ -1,8 +1,8 @@
 export type Note = {
   guid: string;
   title: string; // max 200 chars
-  content: string; // TipTap content (HTML)
-  ckEditorContent?: string; // CKEditor migrated content (optional)
+  content: string | null; // TipTap content (HTML), null = CKEditor-only note
+  ckEditorContent?: string; // CKEditor content (for migrated or CKEditor-only notes)
   created: number; // timestamp
   modified: number; // timestamp
 } 

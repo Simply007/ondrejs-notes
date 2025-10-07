@@ -14,21 +14,37 @@ export default function RichText({
     onChange
 }: {
     documentId: string,
-    content: string,
+    content: string | null,
     ckEditorContent?: string,
     isMigrated: boolean,
     selectedEditor: EditorType,
     onEditorChange: (editor: EditorType) => void,
     onChange: (newContent: string) => void
 }) {
-    // Non-migrated notes: TipTap only
+    // CKEditor-only notes (content === null): Show only CKEditor
+    const isCKEditorOnly = content === null && ckEditorContent !== undefined;
+    if (isCKEditorOnly) {
+        return (
+            <div className="main-container">
+                <div className="editor-container">
+                    <CKEditorArea
+                        documentId={documentId}
+                        content={ckEditorContent || ''}
+                        onChange={onChange}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    // Non-migrated TipTap notes: TipTap only
     if (!isMigrated) {
         return (
             <div className="main-container">
                 <div className="editor-container">
                     <TipTapArea
                         documentId={documentId}
-                        content={content}
+                        content={content || ''}
                         onChange={onChange}
                     />
                 </div>
@@ -63,14 +79,14 @@ export default function RichText({
                 {selectedEditor === 'TipTap' ? (
                     <TipTapArea
                         documentId={documentId}
-                        content={content}
+                        content={content || ''}
                         onChange={() => {}} // Read-only
                         readOnly={true}
                     />
                 ) : (
                     <CKEditorArea
                         documentId={documentId}
-                        content={ckEditorContent || content}
+                        content={ckEditorContent || content || ''}
                         onChange={onChange}
                     />
                 )}

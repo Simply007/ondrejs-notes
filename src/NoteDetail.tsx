@@ -62,15 +62,30 @@ export default function NoteDetail() {
 
     let updatedNote: Note;
     if (field === 'content') {
-      const contentField = note.ckEditorContent && selectedEditor === 'CKEditor'
-        ? 'ckEditorContent'
-        : 'content';
-
-      updatedNote = {
-        ...note,
-        [contentField]: value,
-        modified: Date.now(),
-      };
+      // CKEditor-only notes (content === null): always save to ckEditorContent
+      if (note.content === null && note.ckEditorContent !== undefined) {
+        updatedNote = {
+          ...note,
+          ckEditorContent: value,
+          modified: Date.now(),
+        };
+      }
+      // Migrated notes: save to appropriate field based on selected editor
+      else if (note.ckEditorContent && selectedEditor === 'CKEditor') {
+        updatedNote = {
+          ...note,
+          ckEditorContent: value,
+          modified: Date.now(),
+        };
+      }
+      // TipTap notes: save to content
+      else {
+        updatedNote = {
+          ...note,
+          content: value,
+          modified: Date.now(),
+        };
+      }
     } else {
       updatedNote = {
         ...note,
@@ -97,8 +112,8 @@ export default function NoteDetail() {
     <div className="note-detail-container">
       <button className="back-btn" onClick={() => navigate('/')}>Back</button>
 
-      {/* Show migrate button only for non-migrated notes */}
-      {!note.ckEditorContent && (
+      {/* Show migrate button only for non-migrated TipTap notes (not CKEditor-only) */}
+      {note.content !== null && !note.ckEditorContent && (
         <div className="migration-controls">
           <button
             className="migrate-btn"
