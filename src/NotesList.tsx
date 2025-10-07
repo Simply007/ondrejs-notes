@@ -16,7 +16,7 @@ export default function NotesList() {
     setDebugMode(urlParams.get('debug') === 'true');
   }, []);
 
-  const handleNewTipTapNote = () => {
+  const handleNewTiptapNote = () => {
     const now = Date.now();
     const newNote: Note = {
       guid: generateGUID(),
@@ -36,7 +36,7 @@ export default function NotesList() {
     const newNote: Note = {
       guid: generateGUID(),
       title: '',
-      content: null, // null = CKEditor-only note (no TipTap version)
+      content: null, // null = CKEditor-only note (no Tiptap version)
       ckEditorContent: '', // Pre-set to mark as CKEditor note
       created: now,
       modified: now,
@@ -58,7 +58,7 @@ export default function NotesList() {
   };
 
   const handleMigrate = (note: Note) => {
-    if (!window.confirm('Migrate this note to CKEditor? The original TipTap content will be preserved as read-only.')) {
+    if (!window.confirm('Migrate this note to CKEditor? The original Tiptap content will be preserved as read-only.')) {
       return;
     }
 
@@ -103,8 +103,8 @@ export default function NotesList() {
       <div className="notes-header">
         <h1>Notes</h1>
         <div className="new-note-buttons">
-          <button className="new-note-btn tiptap" onClick={handleNewTipTapNote}>
-            + TipTap Note
+          <button className="new-note-btn tiptap" onClick={handleNewTiptapNote}>
+            + Tiptap Note
           </button>
           <button className="new-note-btn ckeditor" onClick={handleNewCKEditorNote}>
             + CKEditor Note
@@ -124,7 +124,7 @@ export default function NotesList() {
               <div className="note-tile-header">
                 <h2>{note.title || <em>(No Title)</em>}</h2>
                 <span className={`editor-badge ${note.content === null || note.ckEditorContent ? 'ckeditor' : 'tiptap'}`}>
-                  {note.content === null || note.ckEditorContent ? 'CKEditor' : 'TipTap'}
+                  {note.content === null || note.ckEditorContent ? 'CKEditor' : 'Tiptap'}
                 </span>
               </div>
               <p className="note-preview" dangerouslySetInnerHTML={{__html: (note.content || '').slice(0, 50) + '...'}}/>

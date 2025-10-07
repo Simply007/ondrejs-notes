@@ -45,8 +45,8 @@ const sampleTitles = [
   'Code Snippets', 'Design Inspiration', 'Research Notes'
 ];
 
-const sampleContentTipTap = [
-  '<p>This is a <strong>TipTap</strong> note with <em>formatted</em> text.</p><ul><li><p>List item 1</p></li><li><p>List item 2</p></li></ul>',
+const sampleContentTiptap = [
+  '<p>This is a <strong>Tiptap</strong> note with <em>formatted</em> text.</p><ul><li><p>List item 1</p></li><li><p>List item 2</p></li></ul>',
   '<h2>Section Title</h2><p>Some paragraph content here with <u>underlined</u> text.</p>',
   '<p>Plain text note with a <a href="https://example.com">link</a>.</p>',
   '<blockquote><p>A quote from someone important.</p></blockquote><p>Regular text below.</p>',
@@ -63,16 +63,16 @@ const sampleContentCKEditor = [
 
 // Generate additional notes
 for (let i = 0; i < count; i++) {
-  const noteType = Math.floor(Math.random() * 3); // 0=TipTap, 1=CKEditor-only, 2=Migrated
+  const noteType = Math.floor(Math.random() * 3); // 0=Tiptap, 1=CKEditor-only, 2=Migrated
   const now = Date.now() + i;
   const title = sampleTitles[i % sampleTitles.length] + ` #${i + 1}`;
 
   if (noteType === 0) {
-    // TipTap note
-    const content = sampleContentTipTap[Math.floor(Math.random() * sampleContentTipTap.length)];
+    // Tiptap note
+    const content = sampleContentTiptap[Math.floor(Math.random() * sampleContentTiptap.length)];
     notes.push({
       guid: generateGUID(),
-      title: `${title} [TipTap]`,
+      title: `${title} [Tiptap]`,
       content: content,
       created: now,
       modified: now
@@ -90,7 +90,7 @@ for (let i = 0; i < count; i++) {
     });
   } else {
     // Migrated note (both content and ckEditorContent)
-    const tipTapContent = sampleContentTipTap[Math.floor(Math.random() * sampleContentTipTap.length)];
+    const tipTapContent = sampleContentTiptap[Math.floor(Math.random() * sampleContentTiptap.length)];
     const ckContent = sampleContentCKEditor[Math.floor(Math.random() * sampleContentCKEditor.length)];
     notes.push({
       guid: generateGUID(),

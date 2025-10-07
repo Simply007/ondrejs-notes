@@ -16,7 +16,7 @@
   },
   {
     "guid": "4b6242e3-642b-4fa3-86f2-4e951d87caaa",
-    "title": "Meeting Notes #1 [TipTap]",
+    "title": "Meeting Notes #1 [Tiptap]",
     "content": "<pre><code>const example = \"code block\";\nconsole.log(example);</code></pre>",
     "created": 1759835477874,
     "modified": 1759835477874
@@ -47,14 +47,14 @@
   },
   {
     "guid": "41f1f3bc-09e0-4004-8fa5-20da4072dc6d",
-    "title": "Book Recommendations #5 [TipTap]",
+    "title": "Book Recommendations #5 [Tiptap]",
     "content": "<h2>Section Title</h2><p>Some paragraph content here with <u>underlined</u> text.</p>",
     "created": 1759835477878,
     "modified": 1759835477878
   },
   {
     "guid": "156b0f6f-0428-4218-8d37-3ec53247998f",
-    "title": "Recipe: Pasta #6 [TipTap]",
+    "title": "Recipe: Pasta #6 [Tiptap]",
     "content": "<p>Plain text note with a <a href=\"https://example.com\">link</a>.</p>",
     "created": 1759835477879,
     "modified": 1759835477879
@@ -69,7 +69,7 @@
   },
   {
     "guid": "77f77d1d-3856-47ea-a0a5-4da2ee5e126a",
-    "title": "Budget 2025 #8 [TipTap]",
+    "title": "Budget 2025 #8 [Tiptap]",
     "content": "<p>Plain text note with a <a href=\"https://example.com\">link</a>.</p>",
     "created": 1759835477881,
     "modified": 1759835477881
@@ -100,7 +100,7 @@
   },
   {
     "guid": "47220829-5bfa-45a7-a227-6162c0db2124",
-    "title": "Weekly Review #12 [TipTap]",
+    "title": "Weekly Review #12 [Tiptap]",
     "content": "<pre><code>const example = \"code block\";\nconsole.log(example);</code></pre>",
     "created": 1759835477885,
     "modified": 1759835477885
@@ -115,7 +115,7 @@
   },
   {
     "guid": "90485329-467a-42f2-94fd-a0ada926af19",
-    "title": "Design Inspiration #14 [TipTap]",
+    "title": "Design Inspiration #14 [Tiptap]",
     "content": "<blockquote><p>A quote from someone important.</p></blockquote><p>Regular text below.</p>",
     "created": 1759835477887,
     "modified": 1759835477887

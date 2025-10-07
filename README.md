@@ -119,9 +119,9 @@ node scripts/generateNotes.cjs --count=20 --no-samples > public/sample-notes.jso
 - `--no-samples` - Skip including existing sample notes from `assets/sampleNotes.json`
 
 The generated notes include a mix of:
-- **TipTap notes** - Standard notes using TipTap editor
-- **CKEditor-only notes** - Notes created directly with CKEditor (no TipTap version)
-- **Migrated notes** - Notes that have both TipTap (read-only) and CKEditor versions
+- **Tiptap notes** - Standard notes using Tiptap editor
+- **CKEditor-only notes** - Notes created directly with CKEditor (no Tiptap version)
+- **Migrated notes** - Notes that have both Tiptap (read-only) and CKEditor versions
 
 #### Debug Mode (UI)
 

@@ -40,7 +40,7 @@ import FontFamily from '@tiptap/extension-font-family'
 import TextAlign from '@tiptap/extension-text-align'
 
 
-import './TipTapArea.css';
+import './TiptapArea.css';
 
 
 function MenuBar({ editor }: { editor: Editor }) {

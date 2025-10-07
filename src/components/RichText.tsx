@@ -1,8 +1,8 @@
 import CKEditorArea from './CKEditorArea';
-import TipTapArea from './TipTapArea';
+import TiptapArea from './TiptapArea';
 import './RichText.css';
 
-type EditorType = 'TipTap' | 'CKEditor';
+type EditorType = 'Tiptap' | 'CKEditor';
 
 export default function RichText({
     documentId,
@@ -37,12 +37,12 @@ export default function RichText({
         );
     }
 
-    // Non-migrated TipTap notes: TipTap only
+    // Non-migrated Tiptap notes: Tiptap only
     if (!isMigrated) {
         return (
             <div className="main-container">
                 <div className="editor-container">
-                    <TipTapArea
+                    <TiptapArea
                         documentId={documentId}
                         content={content || ''}
                         onChange={onChange}
@@ -62,22 +62,22 @@ export default function RichText({
                     value={selectedEditor}
                     onChange={(e) => onEditorChange(e.target.value as EditorType)}
                 >
-                    <option value="TipTap">TipTap (Original - Read Only)</option>
+                    <option value="Tiptap">Tiptap (Original - Read Only)</option>
                     <option value="CKEditor">CKEditor</option>
                 </select>
             </div>
 
-            {selectedEditor === 'TipTap' && (
+            {selectedEditor === 'Tiptap' && (
                 <div className="migration-warning">
                     ⚠️ This content has been migrated to CKEditor.
-                    The TipTap version is read-only.
+                    The Tiptap version is read-only.
                     Switch to CKEditor to edit the current version.
                 </div>
             )}
 
             <div className="editor-container">
-                {selectedEditor === 'TipTap' ? (
-                    <TipTapArea
+                {selectedEditor === 'Tiptap' ? (
+                    <TiptapArea
                         documentId={documentId}
                         content={content || ''}
                         onChange={() => {}} // Read-only

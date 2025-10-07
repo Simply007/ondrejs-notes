@@ -8,7 +8,7 @@ export default function NoteDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [note, setNote] = useState<Note | undefined>();
-  const [selectedEditor, setSelectedEditor] = useState<'TipTap' | 'CKEditor'>('TipTap');
+  const [selectedEditor, setSelectedEditor] = useState<'Tiptap' | 'CKEditor'>('Tiptap');
 
   useEffect(() => {
     if(!id) {
@@ -38,13 +38,13 @@ export default function NoteDetail() {
   }, [id, navigate]);
 
   const handleMigrateToCKEditor = () => {
-    if (!note || !window.confirm('Migrate this note to CKEditor? The original TipTap content will be preserved as read-only.')) {
+    if (!note || !window.confirm('Migrate this note to CKEditor? The original Tiptap content will be preserved as read-only.')) {
       return;
     }
 
     const updatedNote = {
       ...note,
-      ckEditorContent: note.content, // Copy TipTap content as starting point
+      ckEditorContent: note.content, // Copy Tiptap content as starting point
       modified: Date.now(),
     };
 
@@ -78,7 +78,7 @@ export default function NoteDetail() {
           modified: Date.now(),
         };
       }
-      // TipTap notes: save to content
+      // Tiptap notes: save to content
       else {
         updatedNote = {
           ...note,
@@ -112,7 +112,7 @@ export default function NoteDetail() {
     <div className="note-detail-container">
       <button className="back-btn" onClick={() => navigate('/')}>Back</button>
 
-      {/* Show migrate button only for non-migrated TipTap notes (not CKEditor-only) */}
+      {/* Show migrate button only for non-migrated Tiptap notes (not CKEditor-only) */}
       {note.content !== null && !note.ckEditorContent && (
         <div className="migration-controls">
           <button
