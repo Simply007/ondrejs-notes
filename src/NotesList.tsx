@@ -5,10 +5,15 @@ import type { Note } from './types';
 
 export default function NotesList() {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [debugMode, setDebugMode] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     setNotes(getNotes());
+
+    // Check for ?debug=true in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    setDebugMode(urlParams.get('debug') === 'true');
   }, []);
 
   const handleNewTipTapNote = () => {
@@ -68,6 +73,31 @@ export default function NotesList() {
     setNotes(updatedNotes);
   };
 
+  const handleGenerateSampleNotes = async () => {
+    if (!window.confirm('Generate sample notes? This will add notes to your local storage.')) {
+      return;
+    }
+
+    try {
+      // Fetch pre-generated sample notes
+      const response = await fetch('/sample-notes.json');
+      if (!response.ok) {
+        throw new Error('Failed to fetch sample notes');
+      }
+      const sampleNotes: Note[] = await response.json();
+
+      const currentNotes = getNotes();
+      const updatedNotes = [...sampleNotes, ...currentNotes];
+      saveNotes(updatedNotes);
+      setNotes(updatedNotes);
+
+      alert(`Added ${sampleNotes.length} sample notes!`);
+    } catch (error) {
+      console.error('Error generating notes:', error);
+      alert('Failed to generate sample notes. Check console for details.');
+    }
+  };
+
   return (
     <div className="notes-list-container">
       <div className="notes-header">
@@ -79,6 +109,11 @@ export default function NotesList() {
           <button className="new-note-btn ckeditor" onClick={handleNewCKEditorNote}>
             + CKEditor Note
           </button>
+          {debugMode && (
+            <button className="new-note-btn debug" onClick={handleGenerateSampleNotes}>
+              🔧 Generate Sample Notes
+            </button>
+          )}
         </div>
       </div>
       <div className="notes-tiles">

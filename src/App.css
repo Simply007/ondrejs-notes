@@ -86,6 +86,13 @@
 .new-note-btn.ckeditor:hover {
   background: #005a8c;
 }
+.new-note-btn.debug {
+  background: #ff9800;
+  color: white;
+}
+.new-note-btn.debug:hover {
+  background: #f57c00;
+}
 .notes-tiles {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

@@ -1,0 +1,131 @@
+[
+  {
+    "guid": "6c03b631-03e0-4def-888a-45491fa6ca2d",
+    "title": "CKEditor migrated",
+    "content": "<h1>Welcome to the world of WYSIWYG editors</h1><p>WYSIWYG (What You See Is What You Get) editors allow users to create content visually, without knowing HTML. Below you will find examples of various elements supported by the editor.</p><hr><h2>Basic Formatting</h2><p><strong>This is bold text using &lt;strong&gt;</strong>, and this is <strong>bold text using &lt;b&gt;</strong>.</p><p><strong>This is bold text using style attribute</strong>.</p><p><em>This is italic text using &lt;em&gt;</em>, and this is <em>italic text using &lt;i&gt;</em>.</p><p><em>This is italic text using style attribute</em>.</p><p><u>This is underlined text using &lt;u&gt;</u> and <u>this is underlined using style attribute</u>.</p><p><s>This is strikethrough using &lt;s&gt;</s>, and this is <s>using &lt;strike&gt;</s>.</p><p><s>This is strikethrough using style attribute</s>.</p><p>This is <sub>subscript text</sub>, and this is <sup>superscript text</sup>.</p><p><sub>This is subscript text using style attribute</sub>, and <sup>this is superscript using style attribute</sup>.</p><p><mark>This is highlighted text</mark>, <mark data-color=\"red\" style=\"background-color: red; color: inherit;\">this is highlighted in red</mark>, and <mark data-color=\"#ffa8a8\" style=\"background-color: rgb(255, 168, 168); color: inherit;\">this is highlighted in pink</mark>.</p><h2>Lists and Tasks</h2><p>Here is an unordered list:</p><ul><li><p>First item</p></li><li><p>Second item</p></li><li><p>Third item</p></li></ul><p>Here is an ordered list:</p><ol><li><p>First item</p></li><li><p>Second item</p></li></ol><p>Here is a task list:</p><ul data-type=\"taskList\"><li data-checked=\"true\" data-type=\"taskItem\"><label><input type=\"checkbox\" checked=\"checked\"><span></span></label><div><p>Completed task</p></div></li><li data-checked=\"false\" data-type=\"taskItem\"><label><input type=\"checkbox\"><span></span></label><div><p>Pending task</p></div></li></ul><h2>Quotes and Code</h2><blockquote><p>\"A WYSIWYG editor makes life easier!\" — Anonymous</p></blockquote><pre><code>\nfunction wysiwygDemo() {\n    console.log(\"Welcome to the WYSIWYG demo!\");\n}\n</code></pre><pre><code class=\"language-html\">\n&lt;p&gt;This is an HTML example&lt;/p&gt;\n</code></pre><h2>Images and Links</h2><p>Here is an example image:</p><img src=\"https://placehold.co/600x400\" alt=\"Demo image\"><p>Here is a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.google.com\">link to Google</a>.</p><h2>Tables</h2><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Header 1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Header 2</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Cell 1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Cell 2</p></td></tr></tbody></table><h2>Mentions</h2><p>Hello <span class=\"mention\" data-type=\"mention\" data-id=\"Sven Adlung\" data-mention-suggestion-char=\"@\">@Sven Adlung</span>, how are you?</p><h2>YouTube Video</h2><div data-youtube-video=\"\"><iframe width=\"560\" height=\"315\" allowfullscreen=\"true\" autoplay=\"false\" disablekbcontrols=\"false\" enableiframeapi=\"false\" endtime=\"0\" ivloadpolicy=\"0\" loop=\"false\" modestbranding=\"false\" origin=\"\" playlist=\"\" rel=\"1\" src=\"https://www.youtube.com/embed/3lTUAWOgoHs\" start=\"0\"></iframe></div><h2>Advanced Styling</h2><p style=\"text-align: center;\">This is centered text.</p><p><span style=\"color: rgb(149, 141, 241);\">This is text with a custom color.</span></p><p><span style=\"font-family: Georgia;\">This is text with Georgia font-family.</span></p><h2>Inline Code Example</h2><p>This is <code>inline code</code> inside a paragraph. <br>And a new line.</p><h3>Summary</h3><p>WYSIWYG editors offer a lot of flexibility, from simple text formatting to inserting tables, videos, and enhanced mentions like <span class=\"mention\" data-type=\"mention\" data-id=\"Sven Adlung\" data-mention-suggestion-char=\"@\">@Sven Adlung</span>. They are essential tools for content creators.</p>",
+    "created": 1759829119038,
+    "modified": 1759834133980,
+    "ckEditorContent": "<h1>Welcome to the world of WYSIWYG editors</h1><p>WYSIWYG (What You See Is What You Get) editors allow users to create content visually, without knowing HTML. Below you will find examples of various elements supported by the editor.</p><hr><h2>Basic Formatting</h2><p><strong>This is bold text using &lt;strong&gt;</strong>, and this is <strong>bold text using &lt;b&gt;</strong>.</p><p><strong>This is bold text using style attribute</strong>.</p><p><i>This is italic text using &lt;em&gt;</i>, and this is <i>italic text using &lt;i&gt;</i>.</p><p><i>This is italic text using style attribute</i>.</p><p><u>This is underlined text using &lt;u&gt;</u> and <u>this is underlined using style attribute</u>.</p><p><s>This is strikethrough using &lt;s&gt;</s>, and this is <s>using &lt;strike&gt;</s>.</p><p><s>This is strikethrough using style attribute</s>.</p><p>This is <sub>subscript text</sub>, and this is <sup>superscript text</sup>.</p><p><sub>This is subscript text using style attribute</sub>, and <sup>this is superscript using style attribute</sup>.</p><p><mark>This is highlighted text</mark>, <mark style=\"background-color:red;\" data-color=\"red\">this is highlighted in red</mark>, and <mark style=\"background-color:rgb(255, 168, 168);\" data-color=\"#ffa8a8\">this is highlighted in pink</mark>.</p><h2>Lists and Tasks</h2><p>Here is an unordered list:</p><ul><li>First item</li><li>Second item</li><li>Third item</li></ul><p>Here is an ordered list:</p><ol><li>First item</li><li>Second item</li></ol><p>Here is a task list:</p><ul class=\"todo-list\"><li><label class=\"todo-list__label todo-list__label_without-description\"><input type=\"checkbox\" checked=\"checked\" disabled=\"disabled\"></label><div><p>Completed task</p></div></li><li><label class=\"todo-list__label todo-list__label_without-description\"><input type=\"checkbox\" disabled=\"disabled\"></label><div><p>Pending task</p></div></li></ul><h2>Quotes and Code</h2><blockquote><p>\"A WYSIWYG editor makes life easier!\" — Anonymous</p></blockquote><pre><code class=\"language-plaintext\">\nfunction wysiwygDemo() {\n    console.log(\"Welcome to the WYSIWYG demo!\");\n}\n</code></pre><pre><code class=\"language-html\">\n&lt;p&gt;This is an HTML example&lt;/p&gt;\n</code></pre><h2>Images and Links</h2><p>Here is an example image:</p><p><img src=\"https://placehold.co/600x400\" alt=\"Demo image\"></p><p>Here is a <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.google.com\">link to Google</a>.</p><h2>Tables</h2><figure class=\"table\"><table class=\"ck-table-resized\"><colgroup><col style=\"width:50%;\"><col style=\"width:50%;\"></colgroup><thead><tr><th colspan=\"1\" rowspan=\"1\">Header 1</th><th colspan=\"1\" rowspan=\"1\">Header 2</th></tr></thead><tbody><tr><td colspan=\"1\" rowspan=\"1\">Cell 1</td><td colspan=\"1\" rowspan=\"1\">Cell 2</td></tr></tbody></table></figure><h2>Mentions</h2><p>Hello <span class=\"mention\">@Sven Adlung</span>, how are you?</p><h2>YouTube Video</h2><div data-youtube-video=\"\"><iframe src=\"https://www.youtube.com/embed/3lTUAWOgoHs\" width=\"560\" height=\"315\" allowfullscreen=\"true\"></iframe></div><h2>Advanced Styling</h2><p style=\"text-align:center;\">This is centered text.</p><p><span style=\"color:rgb(149,141,241);\">This is text with a custom color.</span></p><p><span style=\"font-family:Georgia;\">This is text with Georgia font-family.</span></p><h2>Inline Code Example</h2><p>This is <code>inline code</code> inside a paragraph.&nbsp;<br>And a new line.</p><h3>Summary</h3><p>WYSIWYG editors offer a lot of flexibility, from simple text formatting to inserting tables, videos, and enhanced mentions like <span class=\"mention\">@Sven Adlung</span>. They are essential tools for content creators.</p>"
+  },
+  {
+    "guid": "7a2a1e4d-b09f-4a81-af1f-69d37d664c48",
+    "title": "TiptTap Note",
+    "content": "<h1>Welcome to the world of WYSIWYG editors</h1><p>WYSIWYG (What You See Is What You Get) editors allow users to create content visually, without knowing HTML. Below you will find examples of various elements supported by the editor.</p><hr><h2>Basic Formatting</h2><p><strong>This is bold text using &lt;strong&gt;</strong>, and this is <strong>bold text using &lt;b&gt;</strong>.</p><p><strong>This is bold text using style attribute</strong>.</p><p><em>This is italic text using &lt;em&gt;</em>, and this is <em>italic text using &lt;i&gt;</em>.</p><p><em>This is italic text using style attribute</em>.</p><p><u>This is underlined text using &lt;u&gt;</u> and <u>this is underlined using style attribute</u>.</p><p><s>This is strikethrough using &lt;s&gt;</s>, and this is <s>using &lt;strike&gt;</s>.</p><p><s>This is strikethrough using style attribute</s>.</p><p>This is <sub>subscript text</sub>, and this is <sup>superscript text</sup>.</p><p><sub>This is subscript text using style attribute</sub>, and <sup>this is superscript using style attribute</sup>.</p><p><mark>This is highlighted text</mark>, <mark data-color=\"red\" style=\"background-color: red; color: inherit;\">this is highlighted in red</mark>, and <mark data-color=\"#ffa8a8\" style=\"background-color: rgb(255, 168, 168); color: inherit;\">this is highlighted in pink</mark>.</p><h2>Lists and Tasks</h2><p>Here is an unordered list:</p><ul><li><p>First item</p></li><li><p>Second item</p></li><li><p>Third item</p></li></ul><p>Here is an ordered list:</p><ol><li><p>First item</p></li><li><p>Second item</p></li></ol><p>Here is a task list:</p><ul data-type=\"taskList\"><li data-checked=\"true\" data-type=\"taskItem\"><label><input type=\"checkbox\" checked=\"checked\"><span></span></label><div><p>Completed task</p></div></li><li data-checked=\"false\" data-type=\"taskItem\"><label><input type=\"checkbox\"><span></span></label><div><p>Pending task</p></div></li></ul><h2>Quotes and Code</h2><blockquote><p>\"A WYSIWYG editor makes life easier!\" — Anonymous</p></blockquote><pre><code>\nfunction wysiwygDemo() {\n    console.log(\"Welcome to the WYSIWYG demo!\");\n}\n</code></pre><pre><code class=\"language-html\">\n&lt;p&gt;This is an HTML example&lt;/p&gt;\n</code></pre><h2>Images and Links</h2><p>Here is an example image:</p><img src=\"https://placehold.co/600x400\" alt=\"Demo image\"><p>Here is a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.google.com\">link to Google</a>.</p><h2>Tables</h2><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Header 1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Header 2</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Cell 1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Cell 2</p></td></tr></tbody></table><h2>Mentions</h2><p>Hello <span class=\"mention\" data-type=\"mention\" data-id=\"Sven Adlung\" data-mention-suggestion-char=\"@\">@Sven Adlung</span>, how are you?</p><h2>YouTube Video</h2><div data-youtube-video=\"\"><iframe width=\"560\" height=\"315\" allowfullscreen=\"true\" autoplay=\"false\" disablekbcontrols=\"false\" enableiframeapi=\"false\" endtime=\"0\" ivloadpolicy=\"0\" loop=\"false\" modestbranding=\"false\" origin=\"\" playlist=\"\" rel=\"1\" src=\"https://www.youtube.com/embed/3lTUAWOgoHs\" start=\"0\"></iframe></div><h2>Advanced Styling</h2><p style=\"text-align: center;\">This is centered text.</p><p><span style=\"color: rgb(149, 141, 241);\">This is text with a custom color.</span></p><p><span style=\"font-family: Georgia;\">This is text with Georgia font-family.</span></p><h2>Inline Code Example</h2><p>This is <code>inline code</code> inside a paragraph. <br>And a new line.</p><h3>Summary</h3><p>WYSIWYG editors offer a lot of flexibility, from simple text formatting to inserting tables, videos, and enhanced mentions like <span class=\"mention\" data-type=\"mention\" data-id=\"Sven Adlung\" data-mention-suggestion-char=\"@\">@Sven Adlung</span>. They are essential tools for content creators.</p>",
+    "created": 1759829087523,
+    "modified": 1759829115608
+  },
+  {
+    "guid": "4b6242e3-642b-4fa3-86f2-4e951d87caaa",
+    "title": "Meeting Notes #1 [TipTap]",
+    "content": "<pre><code>const example = \"code block\";\nconsole.log(example);</code></pre>",
+    "created": 1759835477874,
+    "modified": 1759835477874
+  },
+  {
+    "guid": "48f3cbd7-4530-411f-bfa4-e01356b1a243",
+    "title": "Project Ideas #2 [CKEditor]",
+    "content": null,
+    "ckEditorContent": "<p>CKEditor supports tables and advanced features.</p><figure class=\"table\"><table><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table></figure>",
+    "created": 1759835477875,
+    "modified": 1759835477875
+  },
+  {
+    "guid": "dfa7d694-28d4-42fb-ad90-20f083106d4b",
+    "title": "Shopping List #3 [Migrated]",
+    "content": "<h2>Section Title</h2><p>Some paragraph content here with <u>underlined</u> text.</p>",
+    "ckEditorContent": "<blockquote><p>CKEditor quote block</p></blockquote><p>More content here.</p>",
+    "created": 1759835477876,
+    "modified": 1759835477876
+  },
+  {
+    "guid": "ff8db856-a724-482a-b096-0e8a58a1e7cf",
+    "title": "Todo for Today #4 [Migrated]",
+    "content": "<p>Plain text note with a <a href=\"https://example.com\">link</a>.</p>",
+    "ckEditorContent": "<p>This is a <strong>CKEditor</strong> note with <i>rich</i> formatting.</p><ul><li>Item one</li><li>Item two</li></ul>",
+    "created": 1759835477877,
+    "modified": 1759835477877
+  },
+  {
+    "guid": "41f1f3bc-09e0-4004-8fa5-20da4072dc6d",
+    "title": "Book Recommendations #5 [TipTap]",
+    "content": "<h2>Section Title</h2><p>Some paragraph content here with <u>underlined</u> text.</p>",
+    "created": 1759835477878,
+    "modified": 1759835477878
+  },
+  {
+    "guid": "156b0f6f-0428-4218-8d37-3ec53247998f",
+    "title": "Recipe: Pasta #6 [TipTap]",
+    "content": "<p>Plain text note with a <a href=\"https://example.com\">link</a>.</p>",
+    "created": 1759835477879,
+    "modified": 1759835477879
+  },
+  {
+    "guid": "f56a3dbe-f5a1-4a0d-9563-1050bff96aa0",
+    "title": "Travel Plans #7 [Migrated]",
+    "content": "<blockquote><p>A quote from someone important.</p></blockquote><p>Regular text below.</p>",
+    "ckEditorContent": "<h2>CKEditor Heading</h2><p>Content with <u>various</u> <s>formatting</s> options.</p>",
+    "created": 1759835477880,
+    "modified": 1759835477880
+  },
+  {
+    "guid": "77f77d1d-3856-47ea-a0a5-4da2ee5e126a",
+    "title": "Budget 2025 #8 [TipTap]",
+    "content": "<p>Plain text note with a <a href=\"https://example.com\">link</a>.</p>",
+    "created": 1759835477881,
+    "modified": 1759835477881
+  },
+  {
+    "guid": "35013c93-0f1b-432d-95ce-dcd343c2de7d",
+    "title": "Workout Routine #9 [CKEditor]",
+    "content": null,
+    "ckEditorContent": "<p><mark>Highlighted text</mark> in CKEditor.</p>",
+    "created": 1759835477882,
+    "modified": 1759835477882
+  },
+  {
+    "guid": "237513fc-38cd-460a-a427-817c6ffa5e8a",
+    "title": "Learning Resources #10 [Migrated]",
+    "content": "<h2>Section Title</h2><p>Some paragraph content here with <u>underlined</u> text.</p>",
+    "ckEditorContent": "<p>CKEditor supports tables and advanced features.</p><figure class=\"table\"><table><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table></figure>",
+    "created": 1759835477883,
+    "modified": 1759835477883
+  },
+  {
+    "guid": "2291d703-9fce-4530-85e5-b3934cecde8c",
+    "title": "Gift Ideas #11 [CKEditor]",
+    "content": null,
+    "ckEditorContent": "<h2>CKEditor Heading</h2><p>Content with <u>various</u> <s>formatting</s> options.</p>",
+    "created": 1759835477884,
+    "modified": 1759835477884
+  },
+  {
+    "guid": "47220829-5bfa-45a7-a227-6162c0db2124",
+    "title": "Weekly Review #12 [TipTap]",
+    "content": "<pre><code>const example = \"code block\";\nconsole.log(example);</code></pre>",
+    "created": 1759835477885,
+    "modified": 1759835477885
+  },
+  {
+    "guid": "d48a6ad9-9ed2-438b-a258-ff4c18c27c75",
+    "title": "Code Snippets #13 [Migrated]",
+    "content": "<pre><code>const example = \"code block\";\nconsole.log(example);</code></pre>",
+    "ckEditorContent": "<p>This is a <strong>CKEditor</strong> note with <i>rich</i> formatting.</p><ul><li>Item one</li><li>Item two</li></ul>",
+    "created": 1759835477886,
+    "modified": 1759835477886
+  },
+  {
+    "guid": "90485329-467a-42f2-94fd-a0ada926af19",
+    "title": "Design Inspiration #14 [TipTap]",
+    "content": "<blockquote><p>A quote from someone important.</p></blockquote><p>Regular text below.</p>",
+    "created": 1759835477887,
+    "modified": 1759835477887
+  },
+  {
+    "guid": "b91473d4-875c-4ea9-8073-41da3f11698d",
+    "title": "Research Notes #15 [Migrated]",
+    "content": "<p>Plain text note with a <a href=\"https://example.com\">link</a>.</p>",
+    "ckEditorContent": "<p>CKEditor supports tables and advanced features.</p><figure class=\"table\"><table><tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody></table></figure>",
+    "created": 1759835477888,
+    "modified": 1759835477888
+  }
+]

@@ -93,6 +93,51 @@ npm run lint
 yarn lint
 ```
 
+## Development Tools
+
+### Generating Sample Notes
+
+This project includes a script to generate sample notes for testing and development purposes.
+
+#### Command Line Usage
+
+Generate sample notes using the npm script:
+
+```bash
+# Generate 15 sample notes (default) with existing samples
+npm run generate-samples
+
+# Generate custom number of notes
+node scripts/generateNotes.cjs --count=30 > public/sample-notes.json
+
+# Generate without including existing sample notes
+node scripts/generateNotes.cjs --count=20 --no-samples > public/sample-notes.json
+```
+
+**Options:**
+- `--count=N` - Number of notes to generate (default: 15)
+- `--no-samples` - Skip including existing sample notes from `assets/sampleNotes.json`
+
+The generated notes include a mix of:
+- **TipTap notes** - Standard notes using TipTap editor
+- **CKEditor-only notes** - Notes created directly with CKEditor (no TipTap version)
+- **Migrated notes** - Notes that have both TipTap (read-only) and CKEditor versions
+
+#### Debug Mode (UI)
+
+Load sample notes directly from the application interface:
+
+1. Open the app with debug mode enabled:
+   ```
+   http://localhost:5173?debug=true
+   ```
+
+2. Click the orange **🔧 Generate Sample Notes** button in the header
+
+3. Confirm to add sample notes to your browser's local storage
+
+**Note:** The debug button is only visible when `?debug=true` is in the URL query string.
+
 ## Deployment
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSimply007%2Fondrejs-notes)
