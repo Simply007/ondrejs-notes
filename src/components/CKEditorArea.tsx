@@ -14,7 +14,6 @@ if (!LICENSE_KEY) {
     throw new Error("Missing VITE_CK_EDITOR_LICENSE_KEY key - CKEditor will not work.");
 }
 
-
 /**
  * USE THIS INTEGRATION METHOD ONLY FOR DEVELOPMENT PURPOSES.
  *
@@ -130,7 +129,7 @@ export default function CKEditorArea({
             TodoList,
             Underline,
             // TODO: Custom/extra
-            // Plugin
+            Plugin
         } = cloud.CKEditor;
         const {
             AIAssistant,
@@ -143,6 +142,38 @@ export default function CKEditorArea({
             RealTimeCollaborativeRevisionHistory,
             RevisionHistory
         } = cloud.CKEditorPremiumFeatures;
+
+        class SupportTiptapMention extends Plugin {
+            init() {
+                const editor = this.editor;
+
+                editor.conversion.for('upcast').elementToAttribute({
+                    view: {
+                        name: 'span',
+                        key: 'data-type',
+                        value: 'mention',
+                        attributes: {
+                            'data-id': true
+                        }
+                    } as any,
+                    model: {
+                        key: 'mention',
+                        value: (viewItem: any) => {
+                            // The mention feature expects that the mention attribute value
+                            // in the model is a plain object with a set of additional attributes.
+                            // In order to create a proper object use the toMentionAttribute() helper method:
+                            const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
+                                // Add any other properties that you need.
+                                id: viewItem.getAttribute('data-id')
+                            });
+
+                            return mentionAttribute;
+                        }
+                    },
+                    converterPriority: 'high'
+                });
+            }
+        }
 
         return {
             ClassicEditor,
@@ -271,7 +302,7 @@ export default function CKEditorArea({
                     TodoList,
                     Underline,
                     // TODO: Custom/extra
-                    // SupportTiptapMention
+                    SupportTiptapMention
                 ],
                 ai: {
                     openAI: {
@@ -282,7 +313,8 @@ export default function CKEditorArea({
                 },
                 cloudServices: {
                     tokenUrl: CLOUD_SERVICES_TOKEN_URL,
-                    webSocketUrl: CLOUD_SERVICES_WEBSOCKET_URL
+                    webSocketUrl: CLOUD_SERVICES_WEBSOCKET_URL,
+                    // bundleVersion: 'editor-1.0.0' // Should match the version uploaded to Cloud Services
                 },
                 collaboration: {
                     channelId: documentId
@@ -409,7 +441,7 @@ export default function CKEditorArea({
                 sourceEditing: {
                     allowCollaborationFeatures: true
                 }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any
         };
     }, [cloud, isLayoutReady, content, documentId]);
@@ -502,6 +534,7 @@ export default function CKEditorArea({
                             if (content && collaborativeContent && content !== collaborativeContent && content.trim() !== '' && collaborativeContent.trim() !== '') {
                                 setHasConflict(true);
                             }
+                            window.editor = editor;
                         }}
                         onChange={(_event, editor) => {
                             const data = editor.getData();
