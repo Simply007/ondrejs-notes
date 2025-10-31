@@ -18,36 +18,27 @@
 	margin-bottom: 8px;
 }
 
-.ck-content {
+.editor-selector {
+	margin-bottom: 16px;
+	padding: 8px 0;
+}
+
+.editor-selector label {
+	margin-right: 8px;
+	font-weight: 500;
+	color: #333;
+}
+
+.editor-selector select {
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: white;
 	font-family: 'Lato';
-	line-height: 1.6;
-	word-break: break-word;
+	font-size: 14px;
+	color: #333;
 }
 
-.editor-container_classic-editor .editor-container__editor {
-	width: 100%;
-}
-
-.revision-history {
-	display: none;
-}
-
-.revision-history__wrapper {
-	display: flex;
-}
-
-.revision-history__wrapper .ck.ck-editor {
-	margin: 0;
-	width: 100%;
-}
-
-.revision-history__wrapper .revision-history__sidebar {
-	border: 1px solid var(--ck-color-base-border);
-	border-left: 0;
-	width: var(--ckeditor5-preview-sidebar-width);
-	min-height: 100%;
-}
-
-.revision-history__wrapper .revision-history__sidebar .ck-revision-history-sidebar {
-	height: 100%;
+.editor-container {
+	text-align: initial;
 }

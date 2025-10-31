@@ -15,6 +15,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 - Hot Module Replacement (HMR)
 - Linting with ESLint
 - Notes are being stored in browser local storage
+- Switch between three different rich text editors: CKEditor, TipTap, or plain TextArea
 
 ### Editing a note using CKEditor
 
@@ -37,6 +38,36 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 >
 > [![CKEditor Configuration](https://img.shields.io/badge/CKEditor%20configuration-8A2BE2?style=for-the-badge)](https://ckeditor.com/ckeditor-5/builder/?redirect=portal#installation/NodgNARATAdAbDADBSIAsIRQMwkXAVjTTlMQE4jsMo4BGORIgDkzUWbRQgFMA7FIjDA6YIeLFg6AXUg8oAIzwFsEaUA=)
 
+### Editing a note using TipTap
+
+- [TipTap](https://tiptap.dev/) is an open-source headless editor framework with extensive customization:
+  - Text formatting
+    - Basic formatting (Bold, Italic, Strike, Code, Underline)
+    - Advanced text styles (Subscript, Superscript, Highlight with multicolor)
+    - Font customization (Color, Font Family)
+  - Typography
+    - Headings (H1-H6)
+    - Paragraphs with text alignment
+    - Blockquotes
+    - Code blocks
+  - Lists
+    - Bullet lists
+    - Ordered lists
+    - Task lists (checkboxes)
+  - Rich content
+    - Tables (resizable with headers)
+    - Images (via URL)
+    - YouTube video embeds
+    - Links
+    - Horizontal rules
+    - Mentions support
+  - Editor features
+    - History (Undo/Redo)
+    - Character count (2000 character limit)
+    - Typography enhancements
+    - Placeholder text
+    - Drop cursor and gap cursor
+
 ![Listing](./assets/listing.png)
 ![Detail](./assets/detail.png)
 
@@ -46,8 +77,10 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [OpenAI API Key](https://platform.openai.com/api-keys)
-- CKEditor account with premium features ([Free trial - no credit card required](https://ckeditor.com/docs/trial/latest/index.html))
+
+**Optional (only required for CKEditor premium features):**
+- [OpenAI API Key](https://platform.openai.com/api-keys) - For AI Assistant feature
+- CKEditor account with premium features ([Free trial - no credit card required](https://ckeditor.com/docs/trial/latest/index.html)) - For collaboration, revision history, and PDF export
 
 ### Installation
 
@@ -62,7 +95,7 @@ yarn install
 ### Prepare environment variables
 
 ```bash
-cp .env.example .env
+cp .env.template .env
 ```
 
 Set:

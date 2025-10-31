@@ -1,0 +1,35 @@
+
+
+.ck-content {
+	font-family: 'Lato';
+	line-height: 1.6;
+	word-break: break-word;
+}
+
+.editor-container_classic-editor .editor-container__editor {
+	width: 100%;
+}
+
+.revision-history {
+	display: none;
+}
+
+.revision-history__wrapper {
+	display: flex;
+}
+
+.revision-history__wrapper .ck.ck-editor {
+	margin: 0;
+	width: 100%;
+}
+
+.revision-history__wrapper .revision-history__sidebar {
+	border: 1px solid var(--ck-color-base-border);
+	border-left: 0;
+	width: var(--ckeditor5-preview-sidebar-width);
+	min-height: 100%;
+}
+
+.revision-history__wrapper .revision-history__sidebar .ck-revision-history-sidebar {
+	height: 100%;
+}
