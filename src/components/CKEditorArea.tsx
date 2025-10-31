@@ -54,6 +54,7 @@ export default function CKEditorArea({
     const editorRevisionHistorySidebarRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
     const [hasConflict, setHasConflict] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const editorInstanceRef = useRef<any>(null);
     const collaborativeContentRef = useRef<string>('');
     const cloud = useCKEditorCloud({ version: '45.1.0', premium: true });
@@ -130,7 +131,7 @@ export default function CKEditorArea({
             TodoList,
             Underline,
             // TODO: Custom/extra
-            // Plugin
+            Plugin
         } = cloud.CKEditor;
         const {
             AIAssistant,
@@ -143,6 +144,40 @@ export default function CKEditorArea({
             RealTimeCollaborativeRevisionHistory,
             RevisionHistory
         } = cloud.CKEditorPremiumFeatures;
+
+        class SupportTiptapMention extends Plugin {
+            init() {
+                const editor = this.editor;
+
+                editor.conversion.for('upcast').elementToAttribute({
+                    view: {
+                        name: 'span',
+                        key: 'data-type',
+                        value: 'mention',
+                        attributes: {
+                            'data-id': true
+                        }
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    } as any,
+                    model: {
+                        key: 'mention',
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        value: (viewItem: any) => {
+                            // The mention feature expects that the mention attribute value
+                            // in the model is a plain object with a set of additional attributes.
+                            // In order to create a proper object use the toMentionAttribute() helper method:
+                            const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
+                                // Add any other properties that you need.
+                                id: viewItem.getAttribute('data-id')
+                            });
+
+                            return mentionAttribute;
+                        }
+                    },
+                    converterPriority: 'high'
+                });
+            }
+        }
 
         return {
             ClassicEditor,
@@ -271,7 +306,7 @@ export default function CKEditorArea({
                     TodoList,
                     Underline,
                     // TODO: Custom/extra
-                    // SupportTiptapMention
+                    SupportTiptapMention
                 ],
                 ai: {
                     openAI: {
@@ -408,7 +443,7 @@ export default function CKEditorArea({
                 },
                 sourceEditing: {
                     allowCollaborationFeatures: true
-                }
+                },
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any
         };
