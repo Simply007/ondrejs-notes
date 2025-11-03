@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import './ContentEditableArea.css';
+import { useEditorHistory } from '../hooks/useEditorHistory';
 
 // Helper function to insert HTML at current cursor position
 function insertHTMLAtCursor(html: string) {
@@ -59,6 +60,73 @@ function wrapSelection(tagName: string) {
     }
 }
 
+// Modern formatting detection using Selection API and getComputedStyle
+function getFormattingState(): { isBold: boolean; isItalic: boolean; isStrike: boolean } {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) {
+        return { isBold: false, isItalic: false, isStrike: false };
+    }
+
+    // Get the anchor node (where selection starts)
+    let node = selection.anchorNode;
+
+    // If text node, get parent element
+    if (node?.nodeType === Node.TEXT_NODE) {
+        node = node.parentElement;
+    }
+
+    if (!node || !(node instanceof HTMLElement)) {
+        return { isBold: false, isItalic: false, isStrike: false };
+    }
+
+    // Check for formatting elements in the DOM hierarchy
+    let current: HTMLElement | null = node;
+    const formatting = {
+        isBold: false,
+        isItalic: false,
+        isStrike: false,
+    };
+
+    while (current && current !== document.body) {
+        const tagName = current.tagName;
+
+        // Check for bold tags
+        if (['B', 'STRONG'].includes(tagName)) {
+            formatting.isBold = true;
+        }
+
+        // Check for italic tags
+        if (['I', 'EM'].includes(tagName)) {
+            formatting.isItalic = true;
+        }
+
+        // Check for strikethrough tags
+        if (['S', 'STRIKE', 'DEL'].includes(tagName)) {
+            formatting.isStrike = true;
+        }
+
+        current = current.parentElement;
+    }
+
+    // Also check computed styles as fallback
+    const computedStyle = window.getComputedStyle(node);
+
+    if (!formatting.isBold) {
+        const fontWeight = computedStyle.fontWeight;
+        formatting.isBold = parseInt(fontWeight) >= 700 || fontWeight === 'bold';
+    }
+
+    if (!formatting.isItalic) {
+        formatting.isItalic = computedStyle.fontStyle === 'italic';
+    }
+
+    if (!formatting.isStrike) {
+        formatting.isStrike = computedStyle.textDecorationLine.includes('line-through');
+    }
+
+    return formatting;
+}
+
 export default function ContentEditableArea({ documentId, content, onChange }: {
     documentId: string,
     content: string,
@@ -66,6 +134,9 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
 }) {
     const editorRef = useRef<HTMLDivElement>(null);
     const isUserTyping = useRef(false);
+
+    // Custom history hook for undo/redo (modern alternative to queryCommandEnabled)
+    const { saveToHistory, undo, redo, canUndo, canRedo } = useEditorHistory(500);
 
     // State for tracking active formatting
     const [editorState, setEditorState] = useState({
@@ -84,8 +155,6 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
         isOrderedList: false,
         isBlockquote: false,
         isCodeBlock: false,
-        canUndo: false,
-        canRedo: false,
     });
 
     // Update content when prop changes (e.g., switching notes)
@@ -98,16 +167,19 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
         isUserTyping.current = false;
     }, [content]);
 
-    // Update editor state on selection change
+    // Update editor state on selection change (using modern APIs)
     useEffect(() => {
         const updateEditorState = () => {
             if (!editorRef.current?.contains(document.activeElement)) return;
 
+            // Get formatting state using modern Selection API + getComputedStyle
+            const formatting = getFormattingState();
+
             setEditorState({
-                // DEPRECATED: document.queryCommandState is deprecated but still widely supported
-                isBold: document.queryCommandState('bold'),
-                isItalic: document.queryCommandState('italic'),
-                isStrike: document.queryCommandState('strikeThrough'),
+                // Modern approach: Selection API + getComputedStyle + DOM traversal
+                isBold: formatting.isBold,
+                isItalic: formatting.isItalic,
+                isStrike: formatting.isStrike,
                 isCode: hasParentTag('CODE'),
                 isParagraph: hasParentTag('P'),
                 isH1: hasParentTag('H1'),
@@ -116,13 +188,12 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
                 isH4: hasParentTag('H4'),
                 isH5: hasParentTag('H5'),
                 isH6: hasParentTag('H6'),
-                isBulletList: document.queryCommandState('insertUnorderedList'),
-                isOrderedList: document.queryCommandState('insertOrderedList'),
+                // Modern approach: DOM traversal for list detection
+                isBulletList: hasParentTag('UL'),
+                isOrderedList: hasParentTag('OL'),
                 isBlockquote: hasParentTag('BLOCKQUOTE'),
                 isCodeBlock: hasParentTag('PRE'),
-                // DEPRECATED: document.queryCommandEnabled is deprecated but still widely supported
-                canUndo: document.queryCommandEnabled('undo'),
-                canRedo: document.queryCommandEnabled('redo'),
+                // Note: canUndo/canRedo now come from useEditorHistory hook
             });
         };
 
@@ -133,7 +204,10 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
     const handleInput = () => {
         if (editorRef.current) {
             isUserTyping.current = true;
-            onChange(editorRef.current.innerHTML);
+            const newContent = editorRef.current.innerHTML;
+            onChange(newContent);
+            // Save to history with debouncing (modern alternative to browser's undo stack)
+            saveToHistory(newContent);
         }
     };
 
@@ -211,7 +285,7 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
         if (url) {
             // Extract video ID from various YouTube URL formats
             let videoId = '';
-            const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?\/]+)/);
+            const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/);
             if (match && match[1]) {
                 videoId = match[1];
             }
@@ -283,8 +357,23 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
     const handleBlockquote = () => execCommand('formatBlock', '<blockquote>');
     const handleHorizontalRule = () => execCommand('insertHorizontalRule');
     const handleHardBreak = () => execCommand('insertLineBreak');
-    const handleUndo = () => execCommand('undo');
-    const handleRedo = () => execCommand('redo');
+
+    // Modern undo/redo using custom history stack
+    const handleUndo = () => {
+        const content = undo();
+        if (content !== null && editorRef.current) {
+            editorRef.current.innerHTML = content;
+            onChange(content);
+        }
+    };
+
+    const handleRedo = () => {
+        const content = redo();
+        if (content !== null && editorRef.current) {
+            editorRef.current.innerHTML = content;
+            onChange(content);
+        }
+    };
 
     // MenuBar inline component
     const MenuBar = () => (
@@ -435,14 +524,14 @@ export default function ContentEditableArea({ documentId, content, onChange }: {
                 </button>
                 <button
                     onClick={handleUndo}
-                    disabled={!editorState.canUndo}
+                    disabled={!canUndo}
                     title="Undo"
                 >
                     Undo
                 </button>
                 <button
                     onClick={handleRedo}
-                    disabled={!editorState.canRedo}
+                    disabled={!canRedo}
                     title="Redo"
                 >
                     Redo

@@ -9,9 +9,9 @@
   * Has ARIA attrs
   * Keyboard shortcuts
   * Load the icons - ideally have it maintained
-* Time to Hello worls is significantly higher because you need to lear editor and then Component UI/UI untegration setup
-  * On the other hand you explore more possibilitiess before you move forward
-  * Vite startup does not work forTipTap UI - I am useing standard Vite setup
+* Time to Hello world is significantly higher because you need to learn editor and then Component UI/UI integration setup
+  * On the other hand you explore more possibilities before you move forward
+  * Vite startup does not work for TipTap UI - I am using standard Vite setup
 * The docs is a bit perplexing - multiple ways to create menu, floating menu , bubble menu
   * Was confusing to distinguish what s Template, UI Component, Extension for Editor 
     * Plus the concept of Provide, Documents
