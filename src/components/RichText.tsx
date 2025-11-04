@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import CKEditorArea from './CKEditorArea';
 import TextArea from './TextArea';
+import ContentEditableArea from './ContentEditableArea';
 
 import './RichText.css';
 import TipTapArea from './TipTapArea';
 
-type EditorType = 'CKEditor' | 'TipTap' | 'TextArea';
+type EditorType = 'CKEditor' | 'TipTap' | 'TextArea' | 'ContentEditable';
 
 export default function RichText({
     documentId,
@@ -29,6 +30,7 @@ export default function RichText({
                     <option value="CKEditor">CKEditor</option>
                     <option value="TipTap">TipTap</option>
                     <option value="TextArea">TextArea</option>
+                    <option value="ContentEditable">ContentEditable</option>
                 </select>
             </div>
 
@@ -41,6 +43,12 @@ export default function RichText({
                     />
                 ) : editorType === 'TipTap' ? (
                     <TipTapArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'ContentEditable' ? (
+                    <ContentEditableArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}

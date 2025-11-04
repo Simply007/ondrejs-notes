@@ -33,6 +33,9 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Real-time Collaborative Editing (Co-Authoring)
     - Real-time Collaborative Revision History
 
+![Listing](./assets/listing.png)
+![Detail](./assets/detail.png)
+
 > [!TIP]
 > Check the [full configuration and it's preview right in the CKEditor builder](https://ckeditor.com/ckeditor-5/builder/?redirect=portal#installation/NodgNARATAdAbDADBSIAsIRQMwkXAVjTTlMQE4jsMo4BGORIgDkzUWbRQgFMA7FIjDA6YIeLFg6AXUg8oAIzwFsEaUA=)
 >
@@ -68,8 +71,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Placeholder text
     - Drop cursor and gap cursor
 
-![Listing](./assets/listing.png)
-![Detail](./assets/detail.png)
+
 
 ## Getting Started
 
