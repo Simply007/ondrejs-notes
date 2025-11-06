@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import CKEditorArea from './CKEditorArea';
 import TextArea from './TextArea';
+import TipTapArea from './TipTapArea';
+import TinyMCEArea from './TinyMCEArea';
 
 import './RichText.css';
-import TipTapArea from './TipTapArea';
 
-type EditorType = 'CKEditor' | 'TipTap' | 'TextArea';
+type EditorType = 'CKEditor' | 'TipTap' | 'TinyMCE' | 'TextArea';
 
 export default function RichText({
     documentId,
@@ -28,6 +29,7 @@ export default function RichText({
                 <select id="editor-type" value={editorType} onChange={handleEditorTypeChange}>
                     <option value="CKEditor">CKEditor</option>
                     <option value="TipTap">TipTap</option>
+                    <option value="TinyMCE">TinyMCE</option>
                     <option value="TextArea">TextArea</option>
                 </select>
             </div>
@@ -41,6 +43,12 @@ export default function RichText({
                     />
                 ) : editorType === 'TipTap' ? (
                     <TipTapArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'TinyMCE' ? (
+                    <TinyMCEArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}

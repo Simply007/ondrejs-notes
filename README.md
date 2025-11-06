@@ -15,7 +15,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 - Hot Module Replacement (HMR)
 - Linting with ESLint
 - Notes are being stored in browser local storage
-- Switch between three different rich text editors: CKEditor, TipTap, or plain TextArea
+- Switch between three different rich text editors: CKEditor, TipTap, TinyMCE, or plain TextArea
 
 ### Editing a note using CKEditor
 
@@ -68,6 +68,35 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Placeholder text
     - Drop cursor and gap cursor
 
+### Editing a note using TinyMCE
+
+- [TinyMCE](https://www.tiny.cloud/) is a powerful WYSIWYG rich text editor with cloud-based features:
+  - Text formatting
+    - Basic formatting (Bold, Italic, Underline, Strikethrough)
+    - Text and background colors
+    - Text alignment (Left, Center, Right, Justify)
+  - Typography
+    - Block formats (Paragraph, Headings)
+    - Code blocks with syntax highlighting
+  - Lists
+    - Bullet lists
+    - Numbered lists
+    - Indentation controls
+  - Rich content
+    - Links, Images, and Media embeds
+    - Tables
+    - Emoticons
+    - Special characters
+  - Editor features
+    - History (Undo/Redo)
+    - Search and replace
+    - Visual blocks view
+    - Full screen mode
+    - Word count
+    - Quickbars for quick formatting
+    - Code view
+    - Preview mode
+
 ![Listing](./assets/listing.png)
 ![Detail](./assets/detail.png)
 
@@ -100,9 +129,10 @@ cp .env.template .env
 
 Set:
 
-- `VITE_AI_API_KEY` from <https://platform.openai.com/api-keys>
-- `VITE_CK_EDITOR_LICENSE_KEY` from <https://portal.ckeditor.com> > Subscriptions > License keys
-- `VITE_CLOUD_SERVICES_WEBSOCKET_URL` and `VITE_CLOUD_SERVICE_TOKEN_URL` from <https://portal.ckeditor.com> > Subscription > Cloud environment -> View <YOUR ENVIRONMENT> > CKEditor configuration
+- `VITE_TINYMCE_API_KEY` from <https://www.tiny.cloud/my-account/dashboard/> (required for TinyMCE editor)
+- `VITE_AI_API_KEY` from <https://platform.openai.com/api-keys> (optional, for CKEditor AI Assistant)
+- `VITE_CK_EDITOR_LICENSE_KEY` from <https://portal.ckeditor.com> > Subscriptions > License keys (optional, for CKEditor premium features)
+- `VITE_CLOUD_SERVICES_WEBSOCKET_URL` and `VITE_CLOUD_SERVICE_TOKEN_URL` from <https://portal.ckeditor.com> > Subscription > Cloud environment -> View <YOUR ENVIRONMENT> > CKEditor configuration (optional, for CKEditor collaboration)
 
 ⚠️ The showcase is ready for development purposes. For production environment, you need to implement the [API Proxy endpoint to API key exchange](https://ckeditor.com/docs/ckeditor5/latest/features/ai-assistant/ai-assistant-integration.html#using-proxy-endpoint).
 
