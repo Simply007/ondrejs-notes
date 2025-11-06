@@ -3,10 +3,14 @@ import CKEditorArea from './CKEditorArea';
 import TextArea from './TextArea';
 import TipTapArea from './TipTapArea';
 import TinyMCEArea from './TinyMCEArea';
+import LexicalArea from './LexicalArea';
 
 import './RichText.css';
 
-type EditorType = 'CKEditor' | 'TipTap' | 'TinyMCE' | 'TextArea';
+
+import './RichText.css';
+
+type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'TextArea';
 
 export default function RichText({
     documentId,
@@ -30,6 +34,7 @@ export default function RichText({
                     <option value="CKEditor">CKEditor</option>
                     <option value="TipTap">TipTap</option>
                     <option value="TinyMCE">TinyMCE</option>
+                    <option value="Lexical">Lexical</option>
                     <option value="TextArea">TextArea</option>
                 </select>
             </div>
@@ -49,6 +54,12 @@ export default function RichText({
                     />
                 ) : editorType === 'TinyMCE' ? (
                     <TinyMCEArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'Lexical' ? (
+                    <LexicalArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}
