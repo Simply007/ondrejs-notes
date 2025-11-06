@@ -15,7 +15,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 - Hot Module Replacement (HMR)
 - Linting with ESLint
 - Notes are being stored in browser local storage
-- Switch between three different rich text editors: CKEditor, TipTap, TinyMCE, or plain TextArea
+- Switch between three different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, or plain TextArea
 
 ### Editing a note using CKEditor
 
@@ -96,6 +96,33 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Quickbars for quick formatting
     - Code view
     - Preview mode
+### Editing a note using Lexical
+
+- [Lexical](https://lexical.dev/) is a lightweight, extensible text editor framework developed by Meta:
+  - Text formatting
+    - Basic formatting (Bold, Italic, Strike, Code)
+    - Clear marks and clear nodes functionality
+  - Typography
+    - Headings (H1-H6)
+    - Paragraphs
+    - Blockquotes
+    - Code blocks with syntax highlighting support
+  - Lists
+    - Bullet lists
+    - Ordered lists
+    - Task lists (checkboxes)
+  - Rich content
+    - Tables (3x3 with headers)
+    - Images (via URL)
+    - YouTube video embeds
+    - Links with toggle functionality
+    - Horizontal rules
+  - Editor features
+    - History (Undo/Redo)
+    - Markdown shortcuts (type `**text**` for bold, etc.)
+    - Custom command system
+    - Lightweight bundle size (~50KB core)
+    - HTML import/export for compatibility with other editors
 
 ![Listing](./assets/listing.png)
 ![Detail](./assets/detail.png)
@@ -121,13 +148,17 @@ npm install
 yarn install
 ```
 
-### Prepare environment variables
+### Prepare environment variables (Optional)
+
+> **Skip this step if you only want to use TipTap, Lexical, or TextArea editors!**
+
+For CKEditor premium features, set up environment variables:
 
 ```bash
 cp .env.template .env
 ```
 
-Set:
+Set the following variables:
 
 - `VITE_TINYMCE_API_KEY` from <https://www.tiny.cloud/my-account/dashboard/> (required for TinyMCE editor)
 - `VITE_AI_API_KEY` from <https://platform.openai.com/api-keys> (optional, for CKEditor AI Assistant)
