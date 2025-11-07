@@ -72,10 +72,11 @@
     "froala-editor": "^4.7.0",
     "lexical": "^0.38.2",
     "quill": "^2.0.3",
+    "quill-delta": "^5.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-froala-wysiwyg": "^4.7.0",
-    "react-quill": "^2.0.0",
+    "react-quill-new": "^3.6.0",
     "react-router-dom": "^6.30.1",
     "tinymce": "^8.2.0"
   },

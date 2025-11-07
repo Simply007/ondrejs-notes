@@ -15,7 +15,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 - Hot Module Replacement (HMR)
 - Linting with ESLint
 - Notes are being stored in browser local storage
-- Switch between different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, Froala, Quill*, or plain TextArea
+- Switch between different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, Froala, Quill, or plain TextArea
 
 ### Editing a note using CKEditor
 
@@ -164,15 +164,8 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 
 ### Editing a note using Quill
 
-> [!WARNING]
-> **Quill Editor Currently Not Working**: The Quill implementation uses `react-quill` v2.0.0, which is **incompatible with React 19** (uses deprecated `findDOMNode`). To use Quill, you must switch to `react-quill-new`:
-> ```bash
-> npm uninstall react-quill
-> npm install react-quill-new quill-delta
-> ```
-> Then change the import in `src/components/QuillArea.tsx` from `'react-quill'` to `'react-quill-new'`.
->
-> See [assets/notes/quill.md](./assets/notes/quill.md) for detailed information about React wrapper compatibility.
+> [!NOTE]
+> **React 19 Compatibility**: This implementation uses `react-quill-new` v3.6.0, a maintained fork that supports React 19. The original `react-quill` package is incompatible with React 19 due to deprecated APIs. See [assets/notes/quill.md](./assets/notes/quill.md) for detailed information about React wrapper compatibility.
 
 - [Quill](https://quilljs.com/) is a powerful open-source WYSIWYG editor with a clean API:
   - Text formatting
@@ -228,6 +221,8 @@ yarn install
 ```
 
 ### Prepare environment variables (Optional)
+
+> **Note**: TipTap, Lexical, Quill, and TextArea editors work without any environment variables.
 
 For CKEditor premium features and commercial editors (TinyMCE, Froala), set up environment variables:
 
