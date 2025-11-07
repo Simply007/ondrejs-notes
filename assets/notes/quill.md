@@ -253,7 +253,6 @@ This documentation serves as a **checkpoint** for understanding why direct integ
 ## Cons
 
 * Not as feature-rich as commercial alternatives
-* React wrapper adds abstraction layer (not native React)
 * Advanced customization requires learning Delta/Blots
 * Fewer built-in features (tables, advanced lists, etc.)
 * Slower development pace than commercial or big-tech editors
