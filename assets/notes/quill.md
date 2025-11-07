@@ -47,16 +47,32 @@
 
 ### Current Implementation Status
 
-✅ **This project now uses `react-quill-new` v3.6.0** which is fully compatible with React 19.
+✅ **This project uses DIRECT Quill integration** - No wrapper dependencies!
 
-**Migration completed**:
-- Package: `react-quill-new` v3.6.0 (with `quill-delta` peer dependency)
-- Import: `import ReactQuill from 'react-quill-new';`
-- No code changes needed (API compatible with original `react-quill`)
-- Status: Working correctly with React 19
-- See QuillArea.tsx for detailed implementation notes
+**Why we're NOT using react-quill or react-quill-new**:
+- **Neither is maintained by Quill team** - Both are community wrappers, not official
+- **react-quill**: Unmaintained, doesn't support React 19, uses deprecated APIs
+- **react-quill-new**: Better fork but still a community wrapper with maintenance uncertainty
+- **Maintenance risk**: Relying on community maintainers who may abandon projects
+- **Wrapper overhead**: Additional abstraction layer we don't need
 
-This documentation serves as a **checkpoint** for understanding Quill's React ecosystem and making informed decisions about which wrapper to use.
+**Current approach - Direct Integration**:
+- Based on official Quill React playground: https://quilljs.com/playground/react
+- This is the **official recommended approach** by Quill team
+- Direct `new Quill()` instantiation in React useEffect
+- Full control over Quill instance and lifecycle
+- No third-party wrapper dependencies
+- Works with all React versions (16, 17, 18, 19+)
+- More maintainable long-term
+
+**Implementation details**:
+- Package: `quill` core only (no wrappers)
+- Pattern: Uncontrolled component with forwardRef
+- HTML conversion: `clipboard.dangerouslyPasteHTML()` for input, `root.innerHTML` for output
+- Event handling: Direct `Quill.events.TEXT_CHANGE` listener
+- See QuillArea.tsx for full implementation
+
+This documentation serves as a **checkpoint** for understanding why direct integration is preferred over community wrappers.
 
 ## Implementation Experience
 
@@ -98,14 +114,15 @@ This documentation serves as a **checkpoint** for understanding Quill's React ec
 
 ### Challenges & Considerations
 
-* **React Wrapper**: Not native React implementation
+* **React Integration**: Direct Quill integration (no wrapper)
   * ⚠️ **IMPORTANT**: See "React Wrapper Status" section above for critical information
-  * ✅ **This project uses `react-quill-new`** (React 19 compatible)
-  * Uses wrapper around vanilla Quill (not native React like Lexical)
-  * Not as "React-like" as Lexical
-  * Some React patterns (like strict mode) may show warnings
-  * Wrapper adds small overhead
-  * No official React wrapper from Quill team - all community-maintained
+  * ✅ **This project uses direct Quill integration** (official recommended approach)
+  * No community wrapper dependencies (react-quill or react-quill-new)
+  * Based on official Quill React playground pattern
+  * Direct instantiation with `new Quill()` in React useEffect
+  * Full control over instance and lifecycle
+  * Works with all React versions including React 19
+  * More maintainable long-term (no third-party wrapper maintenance risk)
 * **Customization Complexity**: Advanced customization requires learning Blots
   * Custom content types need Blot understanding
   * Steeper learning curve for deep customization
@@ -276,36 +293,49 @@ This documentation serves as a **checkpoint** for understanding Quill's React ec
 ## Technical Details
 
 * **Core packages**:
-  * `quill` (core editor - official from Slab)
-  * `react-quill-new` (React wrapper - community-maintained, React 19 compatible) ✅
-  * ⚠️ NOT `react-quill` (unmaintained, incompatible with React 19)
-  * `quill-delta` (required peer dependency for react-quill-new)
-* **Bundle size**: ~43KB minified and gzipped (core)
+  * `quill` (core editor - official from Slab) ✅ **ONLY package needed**
+  * ⚠️ NO wrapper packages used (react-quill or react-quill-new)
+  * Direct integration following official Quill React playground pattern
+* **Bundle size**: ~43KB minified and gzipped (core only, no wrapper overhead)
 * **License**: BSD-3-Clause (permissive open source)
-* **Framework support**: React, Vue, Angular, vanilla JS (via community wrappers)
+* **Framework support**:
+  * React: Direct integration (official pattern from https://quilljs.com/playground/react)
+  * Vue, Angular: Similar direct integration patterns available
+  * Vanilla JS: Native support
+  * ⚠️ Community wrappers exist but NOT recommended (maintenance risk)
 * **Browser support**: Modern browsers (IE11 with polyfills)
-* **Updates**: Regular community contributions, stable release cycle
+* **Updates**: Regular releases from Quill team, stable and maintained
 * **Themes**: Snow (toolbar), Bubble (inline/floating)
 * **Delta format**: JSON-based operational transform-friendly format
 * **Extensibility**: Modules, Custom Blots, Parchment schema
 
 ## Integration Notes
 
-* ✅ **React Integration**: Successfully using `react-quill-new` v3.6.0 for React 19 compatibility
-  * Migration from `react-quill` completed
-  * See "React Wrapper Status" section for details
-  * API is identical between react-quill and react-quill-new (drop-in replacement)
-  * Import changed to: `import ReactQuill from 'react-quill-new';`
-* Works seamlessly with HTML content from other editors
-* Toolbar configured via `modules.toolbar` array
-* Formats explicitly listed to ensure consistency
-* Placeholder text set via prop
-* Minimum height set to 400px for consistency with other editors
-* Snow theme provides familiar toolbar-based interface
-* `onChange` receives HTML string directly
-* React Quill ref provides access to Quill editor instance
-* CSS customization via QuillArea.css for app-specific styling
-* Compatible with existing note storage format (HTML strings)
+* ✅ **React Integration**: Direct Quill integration (no wrapper)
+  * Based on official Quill React playground: https://quilljs.com/playground/react
+  * Implementation pattern: Uncontrolled component with forwardRef
+  * Direct instantiation: `new Quill(element, config)`
+  * Event handling: `quill.on(Quill.events.TEXT_CHANGE, callback)`
+  * See QuillArea.tsx for complete implementation
+* **HTML Conversion**:
+  * Input: `quill.clipboard.dangerouslyPasteHTML(html)` to load HTML content
+  * Output: `quill.root.innerHTML` to get HTML string
+  * Works seamlessly with HTML content from other editors
+* **Configuration**:
+  * Toolbar configured via `modules.toolbar` array in Quill constructor
+  * Snow theme provides familiar toolbar-based interface
+  * Placeholder text set via `placeholder` option
+  * Minimum height set to 400px via CSS for consistency
+* **Lifecycle Management**:
+  * Quill instance created in useEffect
+  * Cleanup removes instance on unmount
+  * Ref provides access to Quill instance for advanced use
+* **Integration Benefits**:
+  * No wrapper dependencies to maintain
+  * Full access to Quill API
+  * Works with React 19 and future versions
+  * CSS customization via QuillArea.css
+  * Compatible with existing note storage format (HTML strings)
 
 ## Future Improvements
 

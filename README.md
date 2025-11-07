@@ -165,7 +165,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 ### Editing a note using Quill
 
 > [!NOTE]
-> **React 19 Compatibility**: This implementation uses `react-quill-new` v3.6.0, a maintained fork that supports React 19. The original `react-quill` package is incompatible with React 19 due to deprecated APIs. See [assets/notes/quill.md](./assets/notes/quill.md) for detailed information about React wrapper compatibility.
+> **Direct Integration**: This implementation uses **direct Quill integration** without any wrapper (no react-quill or react-quill-new). This is the **official recommended approach** from [Quill's React playground](https://quilljs.com/playground/react). No community wrapper dependencies means better long-term maintainability and full control. See [assets/notes/quill.md](./assets/notes/quill.md) for detailed information.
 
 - [Quill](https://quilljs.com/) is a powerful open-source WYSIWYG editor with a clean API:
   - Text formatting
@@ -195,6 +195,11 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Free and open-source (BSD-3-Clause license)
     - Lightweight bundle (~43KB minified and gzipped)
     - Mobile-responsive design
+  - Implementation
+    - Direct Quill integration (no wrapper dependencies)
+    - Based on official Quill React playground pattern
+    - Works with all React versions including React 19
+    - Full control over Quill instance and lifecycle
 
 ![Listing](./assets/listing.png)
 ![Detail](./assets/detail.png)
