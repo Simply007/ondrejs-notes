@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",
-    "@tinymce/tinymce-react": "^6.3.0",
     "@lexical/code": "^0.38.2",
     "@lexical/headless": "^0.38.2",
     "@lexical/history": "^0.38.2",
@@ -27,6 +26,7 @@
     "@lexical/selection": "^0.38.2",
     "@lexical/table": "^0.38.2",
     "@lexical/utils": "^0.38.2",
+    "@tinymce/tinymce-react": "^6.3.0",
     "@tiptap/extension-blockquote": "^3.6.5",
     "@tiptap/extension-bold": "^3.6.5",
     "@tiptap/extension-bullet-list": "^3.6.5",
@@ -69,9 +69,11 @@
     "@tiptap/pm": "^3.5.1",
     "@tiptap/react": "^3.6.5",
     "@tiptap/starter-kit": "^3.6.5",
+    "froala-editor": "^4.7.0",
     "lexical": "^0.38.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-froala-wysiwyg": "^4.7.0",
     "react-router-dom": "^6.30.1",
     "tinymce": "^8.2.0"
   },
