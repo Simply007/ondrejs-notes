@@ -4,13 +4,11 @@ import TextArea from './TextArea';
 import TipTapArea from './TipTapArea';
 import TinyMCEArea from './TinyMCEArea';
 import LexicalArea from './LexicalArea';
+import FroalaArea from './FroalaArea';
 
 import './RichText.css';
 
-
-import './RichText.css';
-
-type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'TextArea';
+type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'Froala' | 'TextArea';
 
 export default function RichText({
     documentId,
@@ -35,6 +33,7 @@ export default function RichText({
                     <option value="TipTap">TipTap</option>
                     <option value="TinyMCE">TinyMCE</option>
                     <option value="Lexical">Lexical</option>
+                    <option value="Froala">Froala</option>
                     <option value="TextArea">TextArea</option>
                 </select>
             </div>
@@ -60,6 +59,12 @@ export default function RichText({
                     />
                 ) : editorType === 'Lexical' ? (
                     <LexicalArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'Froala' ? (
+                    <FroalaArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}

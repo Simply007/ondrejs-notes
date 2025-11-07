@@ -15,7 +15,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 - Hot Module Replacement (HMR)
 - Linting with ESLint
 - Notes are being stored in browser local storage
-- Switch between three different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, or plain TextArea
+- Switch between different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, Froala, or plain TextArea
 
 ### Editing a note using CKEditor
 
@@ -124,6 +124,43 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Lightweight bundle size (~50KB core)
     - HTML import/export for compatibility with other editors
 
+### Editing a note using Froala
+
+- [Froala](https://froala.com/) is a powerful commercial WYSIWYG editor with enterprise-grade features:
+  - Text formatting
+    - Basic formatting (Bold, Italic, Underline, Strikethrough)
+    - Advanced text styles (Subscript, Superscript)
+    - Font customization (Font Family, Font Size)
+    - Text and background colors
+    - Text alignment (Left, Center, Right, Justify)
+  - Typography
+    - Headings (H1-H6)
+    - Paragraph formats and styles
+    - Code blocks with beautifier
+    - Line height control
+    - Blockquotes
+  - Lists
+    - Bullet lists
+    - Numbered lists (simple and advanced)
+    - Indentation controls (Indent/Outdent)
+  - Rich content
+    - Links with URL auto-prefix
+    - Images (with resize and percentage-based width)
+    - Videos (YouTube and other embeds)
+    - Tables (with full editing capabilities and styling)
+    - Emoticons
+    - Special characters
+    - Horizontal rules
+  - Editor features
+    - History (Undo/Redo)
+    - Character counter (2000 character limit)
+    - Full screen mode
+    - Code view (HTML)
+    - Word paste support
+    - No attribution/branding in paid version
+    - Print and PDF export capabilities
+    - Spell checker support
+
 ![Listing](./assets/listing.png)
 ![Detail](./assets/detail.png)
 
@@ -152,7 +189,7 @@ yarn install
 
 > **Skip this step if you only want to use TipTap, Lexical, or TextArea editors!**
 
-For CKEditor premium features, set up environment variables:
+For CKEditor premium features and commercial editors (TinyMCE, Froala), set up environment variables:
 
 ```bash
 cp .env.template .env
@@ -161,6 +198,7 @@ cp .env.template .env
 Set the following variables:
 
 - `VITE_TINYMCE_API_KEY` from <https://www.tiny.cloud/my-account/dashboard/> (required for TinyMCE editor)
+- `VITE_FROALA_LICENSE_KEY` from <https://froala.com/wysiwyg-editor/pricing/> (required for Froala editor - obtain license after purchase)
 - `VITE_AI_API_KEY` from <https://platform.openai.com/api-keys> (optional, for CKEditor AI Assistant)
 - `VITE_CK_EDITOR_LICENSE_KEY` from <https://portal.ckeditor.com> > Subscriptions > License keys (optional, for CKEditor premium features)
 - `VITE_CLOUD_SERVICES_WEBSOCKET_URL` and `VITE_CLOUD_SERVICE_TOKEN_URL` from <https://portal.ckeditor.com> > Subscription > Cloud environment -> View <YOUR ENVIRONMENT> > CKEditor configuration (optional, for CKEditor collaboration)
