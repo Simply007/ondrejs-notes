@@ -15,7 +15,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
 - Hot Module Replacement (HMR)
 - Linting with ESLint
 - Notes are being stored in browser local storage
-- Switch between different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, Froala, or plain TextArea
+- Switch between different rich text editors: CKEditor, TipTap, TinyMCE, Lexical, Froala, Quill*, or plain TextArea
 
 ### Editing a note using CKEditor
 
@@ -96,6 +96,7 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Quickbars for quick formatting
     - Code view
     - Preview mode
+
 ### Editing a note using Lexical
 
 - [Lexical](https://lexical.dev/) is a lightweight, extensible text editor framework developed by Meta:
@@ -161,6 +162,47 @@ A simple note-taking application inspired by [Google Keep](https://keep.google.c
     - Print and PDF export capabilities
     - Spell checker support
 
+### Editing a note using Quill
+
+> [!WARNING]
+> **Quill Editor Currently Not Working**: The Quill implementation uses `react-quill` v2.0.0, which is **incompatible with React 19** (uses deprecated `findDOMNode`). To use Quill, you must switch to `react-quill-new`:
+> ```bash
+> npm uninstall react-quill
+> npm install react-quill-new quill-delta
+> ```
+> Then change the import in `src/components/QuillArea.tsx` from `'react-quill'` to `'react-quill-new'`.
+>
+> See [assets/notes/quill.md](./assets/notes/quill.md) for detailed information about React wrapper compatibility.
+
+- [Quill](https://quilljs.com/) is a powerful open-source WYSIWYG editor with a clean API:
+  - Text formatting
+    - Basic formatting (Bold, Italic, Underline, Strikethrough)
+    - Advanced text styles (Subscript, Superscript)
+    - Font customization (Font Family, Font Size)
+    - Text and background colors
+  - Typography
+    - Headings (H1-H6)
+    - Paragraphs
+    - Blockquotes
+    - Code blocks
+  - Lists
+    - Bullet lists
+    - Numbered lists
+    - Checklist support
+    - Indentation controls (Indent/Outdent)
+  - Rich content
+    - Links
+    - Images (via URL)
+    - Videos (YouTube and other embeds)
+  - Editor features
+    - Clean formatting button
+    - Delta-based document model (JSON)
+    - HTML import/export for compatibility with other editors
+    - Snow theme with professional toolbar
+    - Free and open-source (BSD-3-Clause license)
+    - Lightweight bundle (~43KB minified and gzipped)
+    - Mobile-responsive design
+
 ![Listing](./assets/listing.png)
 ![Detail](./assets/detail.png)
 
@@ -186,8 +228,6 @@ yarn install
 ```
 
 ### Prepare environment variables (Optional)
-
-> **Skip this step if you only want to use TipTap, Lexical, or TextArea editors!**
 
 For CKEditor premium features and commercial editors (TinyMCE, Froala), set up environment variables:
 
