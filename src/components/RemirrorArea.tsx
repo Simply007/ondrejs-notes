@@ -66,12 +66,6 @@ function MenuBar({ documentId }: MenuBarProps) {
           Code
         </button>
         <button
-          onClick={() => commands.removeMarks()}
-          disabled={!commands.removeMarks.enabled()}
-        >
-          Clear marks
-        </button>
-        <button
           onClick={() => chain.clearNodes().run()}
         >
           Clear nodes
@@ -289,7 +283,7 @@ export default function RemirrorArea({
 
   return (
     <div className="remirror-editor-wrapper" data-document-id={documentId}>
-      <Remirror manager={manager} initialContent={state}>
+      <Remirror key={documentId} manager={manager} initialContent={state} autoRender="end">
         <MenuBar documentId={documentId} />
         <OnChangeHTML onChange={handleChange} />
       </Remirror>

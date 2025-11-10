@@ -66,6 +66,13 @@ This provides much better developer experience than raw ProseMirror while mainta
 
 ### Challenges & Considerations
 
+* **React StrictMode Incompatibility**: Cannot work with StrictMode enabled
+  * Remirror throws RMR0201 error: "getRootProps has been attached to the DOM more than once"
+  * React 18's StrictMode intentionally double-mounts components in development
+  * Remirror's DOM attachment check fails when components remount
+  * **Solution**: Remove StrictMode globally OR apply StrictMode selectively to routes/components that don't use Remirror
+  * No workaround exists - you cannot "opt out" of StrictMode from within a StrictMode tree
+  * This is a known limitation of Remirror with React 18's stricter development checks
 * **React 19 Compatibility**: Peer dependency issues
   * Currently supports React 16-18, not React 19 yet
   * Needs `--legacy-peer-deps` flag for installation
@@ -82,6 +89,7 @@ This provides much better developer experience than raw ProseMirror while mainta
   * Fewer third-party extensions compared to TipTap
   * Less community content and examples
   * Documentation not as extensive as TipTap
+  * The error messages page can be confusing i.e. https://remirror.io/docs/errors#rmr0201
 * **ProseMirror Dependency**: Inherits ProseMirror complexity
   * Still based on ProseMirror's concepts
   * Some ProseMirror knowledge helpful
@@ -237,6 +245,7 @@ This provides much better developer experience than raw ProseMirror while mainta
 
 ## Cons
 
+* Incompatible with React StrictMode (requires disabling or selective application)
 * Not compatible with React 19 officially (requires --legacy-peer-deps)
 * Smaller ecosystem than TipTap
 * Still requires learning curve (easier but not trivial)
@@ -267,6 +276,7 @@ This provides much better developer experience than raw ProseMirror while mainta
   - You need HTML serialization built-in
 
 * **Avoid if**:
+  - You need StrictMode enabled throughout your app (Remirror incompatible)
   - You need simple out-of-box editor (use Quill, CKEditor)
   - You need multi-framework support (use TipTap instead)
   - You need React 19 official support now
@@ -311,6 +321,13 @@ This provides much better developer experience than raw ProseMirror while mainta
 
 ## Integration Notes
 
+* **StrictMode Handling**: Critical setup requirement
+  * Remirror is incompatible with React StrictMode
+  * StrictMode's double-mounting causes RMR0201 error
+  * **Option 1**: Remove StrictMode from entire app in main.tsx
+  * **Option 2**: Apply StrictMode selectively to routes that don't use Remirror
+  * In this project: StrictMode enabled only on NotesList route, disabled on NoteDetail route
+  * Cannot "opt out" from within StrictMode tree - must exclude at parent level
 * **React Integration**: Simple and clean
   * Use `useRemirror` hook to initialize
   * Wrap with `<Remirror>` component
