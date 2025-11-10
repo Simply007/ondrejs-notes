@@ -1,0 +1,71 @@
+.quill-container {
+    width: 100%;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.quill-container .ql-toolbar {
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+    background-color: #f8f8f8;
+}
+
+.quill-container .ql-container {
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    min-height: 400px;
+    font-family: inherit;
+    background-color: white;
+}
+
+.quill-container .ql-editor {
+    font-size: 16px;
+    min-height: 400px;
+    background-color: white;
+}
+
+.quill-container .ql-editor.ql-blank::before {
+    color: #999;
+    font-style: italic;
+}
+
+/* Match the styling consistency with other editors */
+.quill-container .ql-editor h1 {
+    font-size: 1.5rem;
+}
+
+.quill-container .ql-editor h2 {
+    font-size: 1.3rem;
+}
+
+.quill-container .ql-editor h3 {
+    font-size: 1.1rem;
+}
+
+.quill-container .ql-editor h4,
+.quill-container .ql-editor h5,
+.quill-container .ql-editor h6 {
+    font-size: 1rem;
+}
+
+.quill-container .ql-editor blockquote {
+    border-left: 3px solid #ccc;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+}
+
+.quill-container .ql-editor img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem 0;
+}
+
+.quill-container .ql-editor pre {
+    background: #2e2b29;
+    color: #fff;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+}
