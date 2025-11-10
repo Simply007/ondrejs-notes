@@ -201,7 +201,7 @@ function createOnChangePlugin(onChange: (html: string) => void) {
       init() {
         return null;
       },
-      apply(tr: Transaction) {
+      apply() {
         return null;
       },
     },
