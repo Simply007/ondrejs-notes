@@ -9,10 +9,11 @@ import QuillArea from './QuillArea';
 import SlateArea from './SlateArea';
 import ProseMirrorArea from './ProseMirrorArea';
 import RemirrorArea from './RemirrorArea';
+import SummernoteArea from './SummernoteArea';
 
 import './RichText.css';
 
-type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'Froala' | 'Quill' | 'Slate' | 'ProseMirror' | 'Remirror' | 'TextArea';
+type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'Froala' | 'Quill' | 'Slate' | 'ProseMirror' | 'Remirror' | 'Summernote' | 'TextArea';
 
 export default function RichText({
     documentId,
@@ -42,6 +43,7 @@ export default function RichText({
                     <option value="Slate">Slate</option>
                     <option value="ProseMirror">ProseMirror</option>
                     <option value="Remirror">Remirror</option>
+                    <option value="Summernote">Summernote</option>
                     <option value="TextArea">TextArea</option>
                 </select>
             </div>
@@ -97,6 +99,12 @@ export default function RichText({
                     />
                 ) : editorType === 'Remirror' ? (
                     <RemirrorArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'Summernote' ? (
+                    <SummernoteArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}
