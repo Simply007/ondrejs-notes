@@ -130,8 +130,6 @@ export default function CKEditorArea({
             TableToolbar,
             TodoList,
             Underline,
-            // TODO: Custom/extra
-            Plugin
         } = cloud.CKEditor;
         const {
             AIAssistant,
@@ -144,41 +142,6 @@ export default function CKEditorArea({
             RealTimeCollaborativeRevisionHistory,
             RevisionHistory
         } = cloud.CKEditorPremiumFeatures;
-
-        class SupportTiptapMention extends Plugin {
-            init() {
-                const editor = this.editor;
-
-                editor.conversion.for('upcast').elementToAttribute({
-                    view: {
-                        name: 'span',
-                        key: 'data-type',
-                        value: 'mention',
-                        attributes: {
-                            'data-id': true
-                        }
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    } as any,
-                    model: {
-                        key: 'mention',
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        value: (viewItem: any) => {
-                            // The mention feature expects that the mention attribute value
-                            // in the model is a plain object with a set of additional attributes.
-                            // In order to create a proper object use the toMentionAttribute() helper method:
-                            const mentionAttribute = editor.plugins.get('Mention').toMentionAttribute(viewItem, {
-                                // Add any other properties that you need.
-                                id: viewItem.getAttribute('data-id')
-                            });
-
-                            return mentionAttribute;
-                        }
-                    },
-                    converterPriority: 'high'
-                });
-            }
-        }
-
         return {
             ClassicEditor,
             editorConfig: {
@@ -304,9 +267,7 @@ export default function CKEditorArea({
                     TableProperties,
                     TableToolbar,
                     TodoList,
-                    Underline,
-                    // TODO: Custom/extra
-                    SupportTiptapMention
+                    Underline
                 ],
                 ai: {
                     openAI: {
