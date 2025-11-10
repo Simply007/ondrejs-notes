@@ -76,6 +76,9 @@
     "react-dom": "^19.1.0",
     "react-froala-wysiwyg": "^4.7.0",
     "react-router-dom": "^6.30.1",
+    "slate": "^0.118.1",
+    "slate-history": "^0.113.1",
+    "slate-react": "^0.118.2",
     "tinymce": "^8.2.0"
   },
   "devDependencies": {
