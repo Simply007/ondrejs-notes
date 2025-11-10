@@ -72,7 +72,8 @@ The app will alert if environment variables are missing but will still run with 
 5. **FroalaArea** - Froala WYSIWYG editor
 6. **QuillArea** - Quill editor with direct integration
 7. **SlateArea** - Slate editor with fully customizable framework
-8. **TextArea** - Basic HTML textarea fallback
+8. **ProseMirrorArea** - ProseMirror editor with schema-based document model
+9. **TextArea** - Basic HTML textarea fallback
 
 All editors share the same props interface: `documentId`, `content`, `onChange`.
 
@@ -110,6 +111,23 @@ All editors share the same props interface: `documentId`, `content`, `onChange`.
 - Links with URL prompt dialog
 - Comprehensive TypeScript types for editor elements and text nodes
 - History support via `slate-history` for undo/redo functionality
+
+### ProseMirror Integration Details
+
+**ProseMirrorArea.tsx** implements:
+- Direct ProseMirror integration using core packages (no wrapper library)
+- Schema-based document model using `prosemirror-schema-basic` with list support via `addListNodes`
+- HTML serialization/deserialization using DOMParser and DOMSerializer from ProseMirror
+- Custom onChange plugin that triggers parent callback on every editor update
+- Custom toolbar component with reactive button states (tracks active formatting)
+- Text formatting: bold (strong), italic (em), inline code
+- Block types: paragraphs, headings (H1-H6), blockquote, code block
+- Lists: bullet lists and ordered lists with keyboard shortcuts
+- Special elements: hard break (Shift+Enter), horizontal rule
+- Keyboard shortcuts: Ctrl+B (bold), Ctrl+I (italic), Ctrl+` (code), Tab/Shift+Tab (list indent/outdent)
+- History support via `prosemirror-history` for undo/redo (Ctrl+Z/Ctrl+Y)
+- Additional plugins: `gapCursor` (cursor between blocks), `dropCursor` (visual drop indicator)
+- Proper lifecycle management with editor cleanup on unmount
 
 ### Data Persistence
 

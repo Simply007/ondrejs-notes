@@ -773,6 +773,15 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
+            toggleMark(editor, 'underline');
+          }}
+          className={isMarkActive(editor, 'underline') ? 'is-active' : ''}
+        >
+          Underline
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
             toggleMark(editor, 'strikethrough');
           }}
           className={isMarkActive(editor, 'strikethrough') ? 'is-active' : ''}
