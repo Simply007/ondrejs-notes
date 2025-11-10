@@ -227,6 +227,16 @@
   font-style: italic;
 }
 
+.prosemirror-editor u,
+.ProseMirror u {
+  text-decoration: underline;
+}
+
+.prosemirror-editor s,
+.ProseMirror s {
+  text-decoration: line-through;
+}
+
 /* Horizontal Rule */
 .prosemirror-editor hr,
 .ProseMirror hr {
@@ -295,4 +305,139 @@
   pointer-events: none;
   height: 1.15em;
   border-left: 1.4px solid black;
+}
+
+/* Links */
+.prosemirror-editor a,
+.ProseMirror a {
+  color: #0073e6;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.prosemirror-editor a:hover,
+.ProseMirror a:hover {
+  color: #0052a3;
+}
+
+/* Task List */
+.prosemirror-editor ul[data-task-list],
+.ProseMirror ul[data-task-list] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prosemirror-editor li[data-task-item],
+.ProseMirror li[data-task-item] {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.25em 0;
+}
+
+.prosemirror-editor li[data-task-item]::before,
+.ProseMirror li[data-task-item]::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 0.5em;
+  margin-top: 0.2em;
+  border: 2px solid var(--gray-3);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.prosemirror-editor li[data-task-item][data-checked="true"]::before,
+.ProseMirror li[data-task-item][data-checked="true"]::before {
+  background-color: #646cff;
+  border-color: #646cff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"><path d="M13.5 3L6 10.5 2.5 7"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+}
+
+/* YouTube Embed */
+.prosemirror-editor div[data-youtube-video],
+.ProseMirror div[data-youtube-video] {
+  margin: 1.5rem 0;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.prosemirror-editor div[data-youtube-video] iframe,
+.ProseMirror div[data-youtube-video] iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Tables */
+.prosemirror-editor table,
+.ProseMirror table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.prosemirror-editor td,
+.prosemirror-editor th,
+.ProseMirror td,
+.ProseMirror th {
+  border: 1px solid var(--gray-3);
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 6px 8px;
+  position: relative;
+  vertical-align: top;
+}
+
+.prosemirror-editor td > *,
+.prosemirror-editor th > *,
+.ProseMirror td > *,
+.ProseMirror th > * {
+  margin-bottom: 0;
+}
+
+.prosemirror-editor th,
+.ProseMirror th {
+  background-color: var(--gray-1);
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Table cell selection */
+.ProseMirror .selectedCell:after {
+  background: rgba(100, 108, 255, 0.3);
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+/* Column resize handle */
+.ProseMirror .column-resize-handle {
+  background-color: #646cff;
+  bottom: -2px;
+  position: absolute;
+  right: -2px;
+  pointer-events: none;
+  top: 0;
+  width: 4px;
+}
+
+.ProseMirror.resize-cursor {
+  cursor: ew-resize;
+  cursor: col-resize;
 }
