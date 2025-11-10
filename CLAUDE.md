@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Google Keep-inspired note-taking application built with React, TypeScript, and Vite. It showcases different rich text editor implementations (CKEditor 5, TipTap, TinyMCE, Lexical, Froala, Quill, Slate, ProseMirror, Remirror, and basic TextArea) in a single application. Notes are stored in browser localStorage.
+This is a Google Keep-inspired note-taking application built with React, TypeScript, and Vite. It showcases different rich text editor implementations (CKEditor 5, TipTap, TinyMCE, Lexical, Froala, Quill, Slate, ProseMirror, Remirror, Summernote, and basic TextArea) in a single application. Notes are stored in browser localStorage.
 
 ## Development Commands
 
@@ -74,7 +74,8 @@ The app will alert if environment variables are missing but will still run with 
 7. **SlateArea** - Slate editor with fully customizable framework
 8. **ProseMirrorArea** - ProseMirror editor with schema-based document model
 9. **RemirrorArea** - Remirror editor built on ProseMirror with React hooks API
-10. **TextArea** - Basic HTML textarea fallback
+10. **SummernoteArea** - Summernote editor with jQuery-based integration
+11. **TextArea** - Basic HTML textarea fallback
 
 All editors share the same props interface: `documentId`, `content`, `onChange`.
 
@@ -152,6 +153,31 @@ All editors share the same props interface: `documentId`, `content`, `onChange`.
 - ~300 lines total implementation (cleaner than raw ProseMirror, similar to TipTap)
 
 **Installation note**: Requires `--legacy-peer-deps` flag for React 19 compatibility (officially supports React 16-18).
+
+### Summernote Integration Details
+
+**SummernoteArea.tsx** implements:
+- jQuery-based WYSIWYG editor integration
+- Bootstrap-inspired UI with Summernote Lite (minimal Bootstrap dependency)
+- Direct jQuery initialization in React useEffect hook
+- Comprehensive toolbar with features matching TipTapArea functionality
+- Text formatting: bold, italic, underline, strikethrough, superscript, subscript
+- Block types: paragraphs, headings (H1-H6), pre, blockquote
+- Lists: ordered lists, bullet lists
+- Font customization: font family, font size, text color, background color
+- Insert capabilities: links, images, videos, tables, horizontal rules
+- Code view and help dialogs
+- Undo/redo functionality
+- HTML output format via `summernote('code')` method (compatible with other editors)
+- Custom TypeScript interfaces for type-safe jQuery/Summernote API
+- Proper lifecycle management: initialization on mount, cleanup on unmount
+- Content synchronization using refs to avoid re-initialization issues
+- Height set to 400px to match other editors
+- ~180 lines total implementation
+
+**Installation note**: Requires jQuery as peer dependency. Installed with `--legacy-peer-deps` flag to avoid React 19 peer dependency conflicts.
+
+**Integration approach**: Direct jQuery integration following similar pattern to QuillArea, using refs for stable callbacks and content management.
 
 ### Data Persistence
 

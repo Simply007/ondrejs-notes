@@ -74,6 +74,7 @@
     "@tiptap/starter-kit": "^3.6.5",
     "@tiptap/suggestion": "^3.10.4",
     "froala-editor": "^4.7.0",
+    "jquery": "^3.7.1",
     "lexical": "^0.38.2",
     "prosemirror-commands": "^1.7.1",
     "prosemirror-dropcursor": "^1.8.2",
@@ -97,10 +98,12 @@
     "slate-dom": "^0.119.0",
     "slate-history": "^0.113.1",
     "slate-react": "^0.118.2",
+    "summernote": "^0.9.1",
     "tinymce": "^8.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/jquery": "^3.5.33",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",

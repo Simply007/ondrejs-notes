@@ -1,0 +1,92 @@
+.summernote-container {
+    width: 100%;
+    margin: 0 auto;
+    background-color: white;
+}
+
+/* Customize Summernote toolbar appearance */
+.summernote-container .note-toolbar {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+}
+
+/* Editor area styling */
+.summernote-container .note-editor {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.summernote-container .note-editable {
+    min-height: 400px;
+    font-size: 16px;
+    background-color: white;
+}
+
+/* Placeholder styling */
+.summernote-container .note-placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Match heading sizes with other editors */
+.summernote-container .note-editable h1 {
+    font-size: 1.5rem;
+}
+
+.summernote-container .note-editable h2 {
+    font-size: 1.3rem;
+}
+
+.summernote-container .note-editable h3 {
+    font-size: 1.1rem;
+}
+
+.summernote-container .note-editable h4,
+.summernote-container .note-editable h5,
+.summernote-container .note-editable h6 {
+    font-size: 1rem;
+}
+
+/* Blockquote styling */
+.summernote-container .note-editable blockquote {
+    border-left: 3px solid #ccc;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+}
+
+/* Image styling */
+.summernote-container .note-editable img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem 0;
+}
+
+/* Code block styling */
+.summernote-container .note-editable pre {
+    background: #2e2b29;
+    color: #fff;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+}
+
+/* Table styling */
+.summernote-container .note-editable table {
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.summernote-container .note-editable table td,
+.summernote-container .note-editable table th {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+}
+
+.summernote-container .note-editable table th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
