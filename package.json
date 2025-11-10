@@ -72,6 +72,7 @@
     "@tiptap/pm": "^3.5.1",
     "@tiptap/react": "^3.6.5",
     "@tiptap/starter-kit": "^3.6.5",
+    "@tiptap/suggestion": "^3.10.4",
     "froala-editor": "^4.7.0",
     "lexical": "^0.38.2",
     "prosemirror-commands": "^1.7.1",
