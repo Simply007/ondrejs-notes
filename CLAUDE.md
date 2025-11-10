@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Google Keep-inspired note-taking application built with React, TypeScript, and Vite. It showcases different rich text editor implementations (CKEditor 5, TipTap, TinyMCE, Lexical, Froala, Quill, Slate, and basic TextArea) in a single application. Notes are stored in browser localStorage.
+This is a Google Keep-inspired note-taking application built with React, TypeScript, and Vite. It showcases different rich text editor implementations (CKEditor 5, TipTap, TinyMCE, Lexical, Froala, Quill, Slate, ProseMirror, Remirror, and basic TextArea) in a single application. Notes are stored in browser localStorage.
 
 ## Development Commands
 
@@ -73,7 +73,8 @@ The app will alert if environment variables are missing but will still run with 
 6. **QuillArea** - Quill editor with direct integration
 7. **SlateArea** - Slate editor with fully customizable framework
 8. **ProseMirrorArea** - ProseMirror editor with schema-based document model
-9. **TextArea** - Basic HTML textarea fallback
+9. **RemirrorArea** - Remirror editor built on ProseMirror with React hooks API
+10. **TextArea** - Basic HTML textarea fallback
 
 All editors share the same props interface: `documentId`, `content`, `onChange`.
 
@@ -128,6 +129,29 @@ All editors share the same props interface: `documentId`, `content`, `onChange`.
 - History support via `prosemirror-history` for undo/redo (Ctrl+Z/Ctrl+Y)
 - Additional plugins: `gapCursor` (cursor between blocks), `dropCursor` (visual drop indicator)
 - Proper lifecycle management with editor cleanup on unmount
+
+### Remirror Integration Details
+
+**RemirrorArea.tsx** implements:
+- React wrapper around ProseMirror with hooks-based API
+- Extension-based architecture using `remirror/extensions`
+- `useRemirror` hook for editor initialization with `stringHandler: 'html'` for HTML content
+- `useCommands` hook for command interface (e.g., `commands.toggleBold()`)
+- `useActive` hook for active state tracking (e.g., `active.bold()` for toolbar buttons)
+- `useChainedCommands` hook for composing commands (e.g., `chain.removeLink().run()`)
+- `OnChangeHTML` component for HTML serialization on content changes
+- Text formatting: bold, italic, strike, underline, inline code
+- Block types: paragraphs, headings (H1-H6), blockquote, code block
+- Lists: bullet lists, ordered lists, task lists with checkboxes
+- Tables via TableExtension with `createTable` command
+- Media: images (`insertImage`), links (`updateLink`/`removeLink`), YouTube embeds (via HTML insertion)
+- Special elements: hard break, horizontal rule
+- History support via HistoryExtension for undo/redo
+- Additional extensions: PlaceholderExtension, DropCursorExtension, GapCursorExtension
+- Custom MenuBar component using hooks for toolbar state and commands
+- ~300 lines total implementation (cleaner than raw ProseMirror, similar to TipTap)
+
+**Installation note**: Requires `--legacy-peer-deps` flag for React 19 compatibility (officially supports React 16-18).
 
 ### Data Persistence
 
