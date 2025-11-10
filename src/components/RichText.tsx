@@ -6,10 +6,12 @@ import TinyMCEArea from './TinyMCEArea';
 import LexicalArea from './LexicalArea';
 import FroalaArea from './FroalaArea';
 import QuillArea from './QuillArea';
+import SlateArea from './SlateArea';
+import ProseMirrorArea from './ProseMirrorArea';
 
 import './RichText.css';
 
-type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'Froala' | 'Quill' | 'TextArea';
+type EditorType = 'CKEditor' | 'TipTap' | 'Lexical' | 'TinyMCE' | 'Froala' | 'Quill' | 'Slate' | 'ProseMirror' | 'TextArea';
 
 export default function RichText({
     documentId,
@@ -36,6 +38,8 @@ export default function RichText({
                     <option value="Lexical">Lexical</option>
                     <option value="Froala">Froala</option>
                     <option value="Quill">Quill</option>
+                    <option value="Slate">Slate</option>
+                    <option value="ProseMirror">ProseMirror</option>
                     <option value="TextArea">TextArea</option>
                 </select>
             </div>
@@ -73,6 +77,18 @@ export default function RichText({
                     />
                 ) : editorType === 'Quill' ? (
                     <QuillArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'Slate' ? (
+                    <SlateArea
+                        documentId={documentId}
+                        content={content}
+                        onChange={onChange}
+                    />
+                ) : editorType === 'ProseMirror' ? (
+                    <ProseMirrorArea
                         documentId={documentId}
                         content={content}
                         onChange={onChange}

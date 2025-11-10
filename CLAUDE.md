@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Google Keep-inspired note-taking application built with React, TypeScript, and Vite. It showcases different rich text editor implementations (CKEditor 5, TipTap, and basic TextArea) in a single application. Notes are stored in browser localStorage.
+This is a Google Keep-inspired note-taking application built with React, TypeScript, and Vite. It showcases different rich text editor implementations (CKEditor 5, TipTap, TinyMCE, Lexical, Froala, Quill, Slate, and basic TextArea) in a single application. Notes are stored in browser localStorage.
 
 ## Development Commands
 
@@ -64,12 +64,18 @@ The app will alert if environment variables are missing but will still run with 
 
 ### Rich Text Editor Architecture
 
-**RichText.tsx**: Wrapper component that provides editor selection between three implementations:
+**RichText.tsx**: Wrapper component that provides editor selection between multiple implementations:
 1. **CKEditorArea** - Full-featured CKEditor 5 with premium features (AI Assistant, real-time collaboration, revision history, PDF export)
 2. **TipTapArea** - TipTap editor with extensive formatting options
-3. **TextArea** - Basic HTML textarea fallback
+3. **TinyMCEArea** - TinyMCE editor with comprehensive features
+4. **LexicalArea** - Meta's Lexical editor with custom toolbar
+5. **FroalaArea** - Froala WYSIWYG editor
+6. **QuillArea** - Quill editor with direct integration
+7. **SlateArea** - Slate editor with fully customizable framework
+8. **ProseMirrorArea** - ProseMirror editor with schema-based document model
+9. **TextArea** - Basic HTML textarea fallback
 
-All three editors share the same props interface: `documentId`, `content`, `onChange`.
+All editors share the same props interface: `documentId`, `content`, `onChange`.
 
 ### CKEditor Integration Details
 
@@ -92,6 +98,36 @@ All three editors share the same props interface: `documentId`, `content`, `onCh
 - Custom MenuBar component with `useEditorState` hook for reactive active state indicators (lines 46-252)
 - Character count limit of 2000 characters
 - HTML output format via `getHTML()` method (compatible with CKEditor's htmlSupport configuration)
+
+### Slate Integration Details
+
+**SlateArea.tsx** implements:
+- Completely customizable editor framework built on Slate
+- Custom HTML serialization/deserialization for data persistence
+- Full control over data structure using Slate's document model
+- Custom toolbar with text formatting (bold, italic, underline, strikethrough, code)
+- Block types: paragraphs, headings (H1-H6), blockquotes, code blocks
+- Lists: ordered and unordered lists
+- Links with URL prompt dialog
+- Comprehensive TypeScript types for editor elements and text nodes
+- History support via `slate-history` for undo/redo functionality
+
+### ProseMirror Integration Details
+
+**ProseMirrorArea.tsx** implements:
+- Direct ProseMirror integration using core packages (no wrapper library)
+- Schema-based document model using `prosemirror-schema-basic` with list support via `addListNodes`
+- HTML serialization/deserialization using DOMParser and DOMSerializer from ProseMirror
+- Custom onChange plugin that triggers parent callback on every editor update
+- Custom toolbar component with reactive button states (tracks active formatting)
+- Text formatting: bold (strong), italic (em), inline code
+- Block types: paragraphs, headings (H1-H6), blockquote, code block
+- Lists: bullet lists and ordered lists with keyboard shortcuts
+- Special elements: hard break (Shift+Enter), horizontal rule
+- Keyboard shortcuts: Ctrl+B (bold), Ctrl+I (italic), Ctrl+` (code), Tab/Shift+Tab (list indent/outdent)
+- History support via `prosemirror-history` for undo/redo (Ctrl+Z/Ctrl+Y)
+- Additional plugins: `gapCursor` (cursor between blocks), `dropCursor` (visual drop indicator)
+- Proper lifecycle management with editor cleanup on unmount
 
 ### Data Persistence
 
@@ -150,7 +186,7 @@ Each component has its own CSS file imported directly. Main styles in `App.css` 
 When extending CKEditor functionality, use the Plugin base class pattern shown in `SupportTiptapMention` (CKEditorArea.tsx:148-180). The plugin's `init()` method accesses the editor instance via `this.editor` and can register custom conversions for upcast/downcast.
 
 ### Editor Props Interface
-All three editor implementations must accept the same props:
+All editor implementations must accept the same props:
 - `documentId: string` - Unique identifier (used for CKEditor collaboration channel)
 - `content: string` - Initial HTML content
 - `onChange: (newContent: string) => void` - Callback when content changes
