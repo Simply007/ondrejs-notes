@@ -73,6 +73,7 @@ This gives you maximum flexibility but requires more setup compared to "batterie
   * Every feature needs custom implementation
   * Toolbar requires building from scratch
   * More work than Lexical even
+  * Required to understand the HTML standards, its nesting and rules
 * **Documentation**: Good but complex
   * Comprehensive but dense
   * Examples are helpful but require study

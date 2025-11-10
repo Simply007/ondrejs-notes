@@ -58,6 +58,49 @@ type LinkElement = {
   children: Descendant[];
 };
 
+type ImageElement = {
+  type: 'image';
+  url: string;
+  children: Descendant[];
+};
+
+type HorizontalRuleElement = {
+  type: 'horizontal-rule';
+  children: Descendant[];
+};
+
+type TableElement = {
+  type: 'table';
+  children: TableRowElement[];
+};
+
+type TableRowElement = {
+  type: 'table-row';
+  children: TableCellElement[];
+};
+
+type TableCellElement = {
+  type: 'table-cell';
+  children: Descendant[];
+};
+
+type TaskListElement = {
+  type: 'task-list';
+  children: TaskItemElement[];
+};
+
+type TaskItemElement = {
+  type: 'task-item';
+  checked: boolean;
+  children: Descendant[];
+};
+
+type YoutubeElement = {
+  type: 'youtube';
+  url: string;
+  children: Descendant[];
+};
+
 type CustomElement =
   | ParagraphElement
   | HeadingElement
@@ -66,7 +109,15 @@ type CustomElement =
   | BulletedListElement
   | NumberedListElement
   | ListItemElement
-  | LinkElement;
+  | LinkElement
+  | ImageElement
+  | HorizontalRuleElement
+  | TableElement
+  | TableRowElement
+  | TableCellElement
+  | TaskListElement
+  | TaskItemElement
+  | YoutubeElement;
 
 declare module 'slate' {
   interface CustomTypes {
@@ -111,6 +162,22 @@ const serializeNode = (node: Descendant): string => {
       return `<li>${children}</li>`;
     case 'link':
       return `<a href="${node.url}">${children}</a>`;
+    case 'image':
+      return `<img src="${node.url}" alt="Image" />`;
+    case 'horizontal-rule':
+      return '<hr />';
+    case 'table':
+      return `<table>${children}</table>`;
+    case 'table-row':
+      return `<tr>${children}</tr>`;
+    case 'table-cell':
+      return `<td>${children}</td>`;
+    case 'task-list':
+      return `<ul data-task-list="true">${children}</ul>`;
+    case 'task-item':
+      return `<li data-task-item="true" data-checked="${node.checked}"><input type="checkbox" ${node.checked ? 'checked' : ''} />${children}</li>`;
+    case 'youtube':
+      return `<div data-youtube-video><iframe src="${node.url}" width="640" height="360" frameborder="0" allowfullscreen></iframe></div>`;
     default:
       return children;
   }
@@ -119,7 +186,21 @@ const serializeNode = (node: Descendant): string => {
 // HTML deserialization
 const deserialize = (html: string): Descendant[] => {
   const document = new DOMParser().parseFromString(html, 'text/html');
-  return deserializeNode(document.body);
+  const nodes = deserializeNode(document.body);
+
+  // Ensure we always have at least one valid block element
+  if (nodes.length === 0) {
+    return [{ type: 'paragraph', children: [{ text: '' }] } as Descendant];
+  }
+
+  // Flatten and clean up the structure
+  return nodes.filter(node => {
+    if (SlateElement.isElement(node)) {
+      return true;
+    }
+    // If it's a text node at root level, wrap it in a paragraph
+    return false;
+  });
 };
 
 const deserializeNode = (el: HTMLElement): Descendant[] => {
@@ -131,67 +212,184 @@ const deserializeNode = (el: HTMLElement): Descendant[] => {
     return [{ text: '' }];
   }
 
-  const children: Descendant[] = Array.from(el.childNodes)
+  // For these block elements, we need to separate inline and block children
+  const isBlockContainer = ['BODY', 'P', 'DIV'].includes(el.nodeName);
+
+  if (isBlockContainer && el.nodeName !== 'DIV') {
+    // Separate inline content from block elements
+    const inlineContent: Descendant[] = [];
+    const result: Descendant[] = [];
+
+    for (const child of Array.from(el.childNodes)) {
+      const childEl = child as HTMLElement;
+      const childNodes = deserializeNode(childEl);
+
+      // Check if this child is a block element
+      const isBlockChild = childNodes.some(node =>
+        SlateElement.isElement(node) &&
+        ['paragraph', 'heading', 'blockquote', 'code-block', 'bulleted-list', 'numbered-list', 'image', 'horizontal-rule', 'table', 'task-list', 'youtube'].includes(node.type)
+      );
+
+      if (isBlockChild) {
+        // If we have accumulated inline content, wrap it in a paragraph
+        if (inlineContent.length > 0 && inlineContent.some(n => Text.isText(n) && n.text.trim() !== '')) {
+          if (el.nodeName === 'P') {
+            result.push({ type: 'paragraph', children: inlineContent } as Descendant);
+          }
+          inlineContent.length = 0;
+        }
+        // Add the block element
+        result.push(...childNodes);
+      } else {
+        // Accumulate inline content
+        inlineContent.push(...childNodes);
+      }
+    }
+
+    // Handle remaining inline content
+    if (inlineContent.length > 0) {
+      if (el.nodeName === 'BODY') {
+        // Wrap in paragraph for body
+        result.push({ type: 'paragraph', children: inlineContent } as Descendant);
+      } else if (el.nodeName === 'P') {
+        // Already in paragraph, return the inline content wrapped
+        return [{ type: 'paragraph', children: inlineContent } as Descendant];
+      }
+    }
+
+    return result.length > 0 ? result : [{ type: 'paragraph', children: [{ text: '' }] } as Descendant];
+  }
+
+  // For other elements, process normally
+  const childNodes = Array.from(el.childNodes)
     .flatMap(node => deserializeNode(node as HTMLElement));
 
-  if (children.length === 0) {
-    children.push({ text: '' });
-  }
+  const elementChildren = childNodes.length === 0 ? [{ text: '' }] : childNodes;
 
   switch (el.nodeName) {
     case 'BODY':
-      return children;
+      return elementChildren;
     case 'BR':
       return [{ text: '\n' }];
-    case 'P':
-      return [{ type: 'paragraph', children }];
+    case 'P': {
+      // Check if elementChildren contains block elements
+      const hasBlockChildren = elementChildren.some(child =>
+        SlateElement.isElement(child) &&
+        ['paragraph', 'heading', 'blockquote', 'code-block', 'bulleted-list', 'numbered-list', 'image', 'horizontal-rule', 'table', 'task-list', 'youtube'].includes(child.type)
+      );
+
+      // If there are block children, return them unwrapped (don't nest blocks in paragraphs)
+      if (hasBlockChildren) {
+        const result: Descendant[] = [];
+        const inlineContent: Descendant[] = [];
+
+        elementChildren.forEach(child => {
+          if (SlateElement.isElement(child) &&
+              ['paragraph', 'heading', 'blockquote', 'code-block', 'bulleted-list', 'numbered-list', 'image', 'horizontal-rule', 'table', 'task-list', 'youtube'].includes(child.type)) {
+            // If we have accumulated inline content, wrap it in a paragraph
+            if (inlineContent.length > 0 && inlineContent.some(n => Text.isText(n) && n.text.trim() !== '')) {
+              result.push({ type: 'paragraph', children: inlineContent.slice() } as Descendant);
+              inlineContent.length = 0;
+            }
+            // Add the block element
+            result.push(child);
+          } else {
+            // Accumulate inline content
+            inlineContent.push(child);
+          }
+        });
+
+        // Handle remaining inline content
+        if (inlineContent.length > 0 && inlineContent.some(n => Text.isText(n) && n.text.trim() !== '')) {
+          result.push({ type: 'paragraph', children: inlineContent } as Descendant);
+        }
+
+        return result.length > 0 ? result : [{ type: 'paragraph', children: [{ text: '' }] } as Descendant];
+      }
+
+      // No block children, return a normal paragraph
+      return [{ type: 'paragraph', children: elementChildren }];
+    }
     case 'H1':
-      return [{ type: 'heading', level: 1, children }];
+      return [{ type: 'heading', level: 1, children: elementChildren }];
     case 'H2':
-      return [{ type: 'heading', level: 2, children }];
+      return [{ type: 'heading', level: 2, children: elementChildren }];
     case 'H3':
-      return [{ type: 'heading', level: 3, children }];
+      return [{ type: 'heading', level: 3, children: elementChildren }];
     case 'H4':
-      return [{ type: 'heading', level: 4, children }];
+      return [{ type: 'heading', level: 4, children: elementChildren }];
     case 'H5':
-      return [{ type: 'heading', level: 5, children }];
+      return [{ type: 'heading', level: 5, children: elementChildren }];
     case 'H6':
-      return [{ type: 'heading', level: 6, children }];
+      return [{ type: 'heading', level: 6, children: elementChildren }];
     case 'BLOCKQUOTE':
-      return [{ type: 'blockquote', children }];
+      return [{ type: 'blockquote', children: elementChildren }];
     case 'PRE':
-      return [{ type: 'code-block', children }];
+      return [{ type: 'code-block', children: elementChildren }];
     case 'UL':
-      return [{ type: 'bulleted-list', children: children.map(child =>
+      if (el.getAttribute('data-task-list') === 'true') {
+        return [{ type: 'task-list', children: elementChildren.map(child =>
+          SlateElement.isElement(child) && child.type === 'task-item'
+            ? child
+            : { type: 'task-item', checked: false, children: [child] }
+        ) }];
+      }
+      return [{ type: 'bulleted-list', children: elementChildren.map(child =>
         SlateElement.isElement(child) && child.type === 'list-item'
           ? child
           : { type: 'list-item', children: [child] }
       ) }];
     case 'OL':
-      return [{ type: 'numbered-list', children: children.map(child =>
+      return [{ type: 'numbered-list', children: elementChildren.map(child =>
         SlateElement.isElement(child) && child.type === 'list-item'
           ? child
           : { type: 'list-item', children: [child] }
       ) }];
     case 'LI':
-      return [{ type: 'list-item', children }];
+      if (el.getAttribute('data-task-item') === 'true') {
+        const checked = el.getAttribute('data-checked') === 'true';
+        return [{ type: 'task-item', checked, children: elementChildren }];
+      }
+      return [{ type: 'list-item', children: elementChildren }];
     case 'A':
-      return [{ type: 'link', url: (el as HTMLAnchorElement).href, children }];
+      return [{ type: 'link', url: (el as HTMLAnchorElement).href, children: elementChildren }];
+    case 'IMG':
+      return [{ type: 'image', url: (el as HTMLImageElement).src, children: [{ text: '' }] }];
+    case 'HR':
+      return [{ type: 'horizontal-rule', children: [{ text: '' }] }];
+    case 'TABLE':
+      return [{ type: 'table', children: elementChildren.filter(child =>
+        SlateElement.isElement(child) && child.type === 'table-row'
+      ) as TableRowElement[] }];
+    case 'TR':
+      return [{ type: 'table-row', children: elementChildren.filter(child =>
+        SlateElement.isElement(child) && child.type === 'table-cell'
+      ) as TableCellElement[] }];
+    case 'TD':
+    case 'TH':
+      return [{ type: 'table-cell', children: elementChildren }];
+    case 'DIV':
+      if (el.getAttribute('data-youtube-video') !== null) {
+        const iframe = el.querySelector('iframe');
+        const url = iframe?.getAttribute('src') || '';
+        return [{ type: 'youtube', url, children: [{ text: '' }] }];
+      }
+      return elementChildren;
     case 'STRONG':
     case 'B':
-      return children.map(child => Text.isText(child) ? { ...child, bold: true } : child);
+      return elementChildren.map(child => Text.isText(child) ? { ...child, bold: true } : child);
     case 'EM':
     case 'I':
-      return children.map(child => Text.isText(child) ? { ...child, italic: true } : child);
+      return elementChildren.map(child => Text.isText(child) ? { ...child, italic: true } : child);
     case 'U':
-      return children.map(child => Text.isText(child) ? { ...child, underline: true } : child);
+      return elementChildren.map(child => Text.isText(child) ? { ...child, underline: true } : child);
     case 'S':
     case 'STRIKE':
-      return children.map(child => Text.isText(child) ? { ...child, strikethrough: true } : child);
+      return elementChildren.map(child => Text.isText(child) ? { ...child, strikethrough: true } : child);
     case 'CODE':
-      return children.map(child => Text.isText(child) ? { ...child, code: true } : child);
+      return elementChildren.map(child => Text.isText(child) ? { ...child, code: true } : child);
     default:
-      return children;
+      return elementChildren;
   }
 };
 
@@ -270,6 +468,24 @@ const toggleHeading = (editor: Editor, level: 1 | 2 | 3 | 4 | 5 | 6) => {
   );
 };
 
+const isHeadingActive = (editor: Editor, level: 1 | 2 | 3 | 4 | 5 | 6) => {
+  const { selection } = editor;
+  if (!selection) return false;
+
+  const [match] = Array.from(
+    Editor.nodes(editor, {
+      at: Editor.unhangRange(editor, selection),
+      match: n =>
+        !Editor.isEditor(n) &&
+        SlateElement.isElement(n) &&
+        n.type === 'heading' &&
+        n.level === level,
+    })
+  );
+
+  return !!match;
+};
+
 const insertLink = (editor: Editor, url: string) => {
   if (editor.selection) {
     wrapLink(editor, url);
@@ -312,6 +528,108 @@ const wrapLink = (editor: Editor, url: string) => {
   }
 };
 
+const insertImage = (editor: Editor, url: string) => {
+  const image: ImageElement = {
+    type: 'image',
+    url,
+    children: [{ text: '' }],
+  };
+  Transforms.insertNodes(editor, image);
+};
+
+const insertHorizontalRule = (editor: Editor) => {
+  const hr: HorizontalRuleElement = {
+    type: 'horizontal-rule',
+    children: [{ text: '' }],
+  };
+  Transforms.insertNodes(editor, hr);
+};
+
+const insertHardBreak = (editor: Editor) => {
+  Transforms.insertText(editor, '\n');
+};
+
+const insertTable = (editor: Editor) => {
+  const table: TableElement = {
+    type: 'table',
+    children: Array.from({ length: 3 }, () => ({
+      type: 'table-row',
+      children: Array.from({ length: 3 }, () => ({
+        type: 'table-cell',
+        children: [{ type: 'paragraph', children: [{ text: '' }] }],
+      })),
+    })),
+  };
+  Transforms.insertNodes(editor, table as SlateElement);
+};
+
+const toggleTaskList = (editor: Editor) => {
+  const isActive = isBlockActive(editor, 'task-list');
+
+  Transforms.unwrapNodes(editor, {
+    match: n =>
+      !Editor.isEditor(n) &&
+      SlateElement.isElement(n) &&
+      ['task-list', 'bulleted-list', 'numbered-list'].includes(n.type),
+    split: true,
+  });
+
+  if (!isActive) {
+    const taskItem: TaskItemElement = {
+      type: 'task-item',
+      checked: false,
+      children: [],
+    };
+
+    Transforms.setNodes(editor, taskItem as Partial<SlateElement>);
+
+    const taskList: TaskListElement = {
+      type: 'task-list',
+      children: [],
+    };
+    Transforms.wrapNodes(editor, taskList as SlateElement);
+  } else {
+    Transforms.setNodes(editor, { type: 'paragraph' } as Partial<SlateElement>);
+  }
+};
+
+const insertYoutube = (editor: Editor, url: string) => {
+  // Convert watch URL to embed URL
+  let embedUrl = url;
+  if (url.includes('watch?v=')) {
+    embedUrl = url.replace('watch?v=', 'embed/');
+  } else if (url.includes('youtu.be/')) {
+    const videoId = url.split('youtu.be/')[1];
+    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  const youtube: YoutubeElement = {
+    type: 'youtube',
+    url: embedUrl,
+    children: [{ text: '' }],
+  };
+  Transforms.insertNodes(editor, youtube);
+};
+
+const clearMarks = (editor: Editor) => {
+  Editor.removeMark(editor, 'bold');
+  Editor.removeMark(editor, 'italic');
+  Editor.removeMark(editor, 'underline');
+  Editor.removeMark(editor, 'strikethrough');
+  Editor.removeMark(editor, 'code');
+};
+
+const clearNodes = (editor: Editor) => {
+  Transforms.unwrapNodes(editor, {
+    match: n =>
+      !Editor.isEditor(n) &&
+      SlateElement.isElement(n) &&
+      ['bulleted-list', 'numbered-list', 'task-list'].includes(n.type),
+    split: true,
+  });
+  Transforms.setNodes(editor, { type: 'paragraph' } as Partial<SlateElement>);
+};
+
 // Render components
 const Element = ({ attributes, children, element }: RenderElementProps) => {
   switch (element.type) {
@@ -338,6 +656,61 @@ const Element = ({ attributes, children, element }: RenderElementProps) => {
         <a {...attributes} href={element.url}>
           {children}
         </a>
+      );
+    case 'image':
+      return (
+        <div {...attributes} contentEditable={false}>
+          <img src={element.url} alt="Content" style={{ maxWidth: '100%', height: 'auto' }} />
+          {children}
+        </div>
+      );
+    case 'horizontal-rule':
+      return (
+        <div {...attributes} contentEditable={false}>
+          <hr />
+          {children}
+        </div>
+      );
+    case 'table':
+      return (
+        <table {...attributes}>
+          <tbody>{children}</tbody>
+        </table>
+      );
+    case 'table-row':
+      return <tr {...attributes}>{children}</tr>;
+    case 'table-cell':
+      return <td {...attributes}>{children}</td>;
+    case 'task-list':
+      return <ul {...attributes} className="task-list">{children}</ul>;
+    case 'task-item':
+      return (
+        <li {...attributes} className="task-item">
+          <span contentEditable={false} style={{ marginRight: '0.5em' }}>
+            <input
+              type="checkbox"
+              checked={element.checked}
+              onChange={() => {
+                // This will be handled by the editor
+              }}
+            />
+          </span>
+          {children}
+        </li>
+      );
+    case 'youtube':
+      return (
+        <div {...attributes} contentEditable={false} className="youtube-embed">
+          <iframe
+            src={element.url}
+            width="640"
+            height="360"
+            style={{ border: 0 }}
+            allowFullScreen
+            title="YouTube video"
+          />
+          {children}
+        </div>
       );
     default:
       return <p {...attributes}>{children}</p>;
@@ -400,15 +773,6 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleMark(editor, 'underline');
-          }}
-          className={isMarkActive(editor, 'underline') ? 'is-active' : ''}
-        >
-          Underline
-        </button>
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
             toggleMark(editor, 'strikethrough');
           }}
           className={isMarkActive(editor, 'strikethrough') ? 'is-active' : ''}
@@ -427,6 +791,22 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
+            clearMarks(editor);
+          }}
+        >
+          Clear marks
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            clearNodes(editor);
+          }}
+        >
+          Clear nodes
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
             toggleBlock(editor, 'paragraph');
           }}
           className={isBlockActive(editor, 'paragraph') ? 'is-active' : ''}
@@ -438,7 +818,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             e.preventDefault();
             toggleHeading(editor, 1);
           }}
-          className={isBlockActive(editor, 'heading') ? 'is-active' : ''}
+          className={isHeadingActive(editor, 1) ? 'is-active' : ''}
         >
           H1
         </button>
@@ -447,7 +827,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             e.preventDefault();
             toggleHeading(editor, 2);
           }}
-          className={isBlockActive(editor, 'heading') ? 'is-active' : ''}
+          className={isHeadingActive(editor, 2) ? 'is-active' : ''}
         >
           H2
         </button>
@@ -456,7 +836,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             e.preventDefault();
             toggleHeading(editor, 3);
           }}
-          className={isBlockActive(editor, 'heading') ? 'is-active' : ''}
+          className={isHeadingActive(editor, 3) ? 'is-active' : ''}
         >
           H3
         </button>
@@ -465,7 +845,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             e.preventDefault();
             toggleHeading(editor, 4);
           }}
-          className={isBlockActive(editor, 'heading') ? 'is-active' : ''}
+          className={isHeadingActive(editor, 4) ? 'is-active' : ''}
         >
           H4
         </button>
@@ -474,7 +854,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             e.preventDefault();
             toggleHeading(editor, 5);
           }}
-          className={isBlockActive(editor, 'heading') ? 'is-active' : ''}
+          className={isHeadingActive(editor, 5) ? 'is-active' : ''}
         >
           H5
         </button>
@@ -483,7 +863,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             e.preventDefault();
             toggleHeading(editor, 6);
           }}
-          className={isBlockActive(editor, 'heading') ? 'is-active' : ''}
+          className={isHeadingActive(editor, 6) ? 'is-active' : ''}
         >
           H6
         </button>
@@ -508,6 +888,15 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
+            toggleTaskList(editor);
+          }}
+          className={isBlockActive(editor, 'task-list') ? 'is-active' : ''}
+        >
+          Task list
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
             const url = window.prompt('Enter link URL:', 'https://');
             if (url && url !== 'https://') {
               insertLink(editor, url);
@@ -516,6 +905,28 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
           className={isLinkActive(editor) ? 'is-active' : ''}
         >
           Link
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            const url = window.prompt('Enter image URL:');
+            if (url) {
+              insertImage(editor, url);
+            }
+          }}
+        >
+          Image
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            const url = window.prompt('Enter YouTube URL:');
+            if (url) {
+              insertYoutube(editor, url);
+            }
+          }}
+        >
+          Youtube
         </button>
         <button
           onMouseDown={(e) => {
@@ -529,15 +940,68 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
+            insertTable(editor);
+          }}
+        >
+          Table
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
             toggleBlock(editor, 'blockquote');
           }}
           className={isBlockActive(editor, 'blockquote') ? 'is-active' : ''}
         >
           Blockquote
         </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            insertHorizontalRule(editor);
+          }}
+        >
+          Horizontal rule
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            insertHardBreak(editor);
+          }}
+        >
+          Hard break
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.undo();
+          }}
+        >
+          Undo
+        </button>
+        <button
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.redo();
+          }}
+        >
+          Redo
+        </button>
       </div>
     </div>
   );
+};
+
+// Configure editor to handle void elements
+const withVoidElements = (editor: Editor) => {
+  const { isVoid } = editor;
+
+  editor.isVoid = element => {
+    return ['image', 'horizontal-rule', 'youtube'].includes((element as SlateElement).type)
+      ? true
+      : isVoid(element);
+  };
+
+  return editor;
 };
 
 // Main component
@@ -550,7 +1014,10 @@ export default function SlateArea({
   content: string;
   onChange: (newContent: string) => void;
 }) {
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(
+    () => withVoidElements(withHistory(withReact(createEditor()))),
+    []
+  );
 
   const initialValue = useMemo(() => {
     if (content && content.trim() !== '') {

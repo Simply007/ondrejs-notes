@@ -201,6 +201,86 @@
   max-width: 100%;
 }
 
+/* Horizontal Rule */
+.slate-editable hr {
+  border: none;
+  border-top: 2px solid var(--gray-3);
+  margin: 2rem 0;
+}
+
+/* Tables */
+.slate-editable table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.slate-editable td,
+.slate-editable th {
+  border: 1px solid var(--gray-3);
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 6px 8px;
+  position: relative;
+  vertical-align: top;
+}
+
+.slate-editable td > *,
+.slate-editable th > * {
+  margin-bottom: 0;
+}
+
+.slate-editable th {
+  background-color: var(--gray-1);
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Task List */
+.slate-editable ul.task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.slate-editable li.task-item {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.25em 0;
+}
+
+.slate-editable li.task-item input[type="checkbox"] {
+  cursor: pointer;
+  margin-right: 0.5em;
+  margin-top: 0.2em;
+}
+
+/* YouTube Embed */
+.slate-editable .youtube-embed {
+  margin: 1.5rem 0;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.slate-editable .youtube-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Images */
+.slate-editable img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+}
+
 /* Selection */
 .slate-editable ::selection {
   background-color: rgba(100, 108, 255, 0.3);
