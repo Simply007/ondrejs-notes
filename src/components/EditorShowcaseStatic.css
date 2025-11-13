@@ -169,12 +169,6 @@
   height: 350px !important;
 }
 
-/* Hide unnecessary UI elements for cleaner screenshots */
-.editor-wrapper .ck-toolbar__grouped-dropdown,
-.editor-wrapper .ck-dropdown__button {
-  display: none;
-}
-
 /* Summernote specific adjustments */
 .editor-wrapper .note-editor {
   border: none !important;

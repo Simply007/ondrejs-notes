@@ -1,8 +1,4 @@
 /* Default root styles - will be overridden for showcase */
-#root {
-  color: black;
-  text-align: center;
-}
 
 /* Container for notes pages only */
 .app-container {
