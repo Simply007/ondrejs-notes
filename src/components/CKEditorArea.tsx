@@ -57,7 +57,7 @@ export default function CKEditorArea({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const editorInstanceRef = useRef<any>(null);
     const collaborativeContentRef = useRef<string>('');
-    const cloud = useCKEditorCloud({ version: '45.1.0', premium: true });
+    const cloud = useCKEditorCloud({ version: '47.2.0', premium: true });
 
     useEffect(() => {
         setIsLayoutReady(true);
@@ -132,7 +132,10 @@ export default function CKEditorArea({
             Underline,
         } = cloud.CKEditor;
         const {
-            AIAssistant,
+            AIChat,
+            AIEditorIntegration,
+            AIQuickActions,
+            AIReviewMode,
             ExportPdf,
             FormatPainter,
             MultiLevelList,
@@ -151,10 +154,10 @@ export default function CKEditorArea({
                         'redo',
                         '|',
                         'revisionHistory',
-                        '|',
-                        'aiCommands',
-                        'aiAssistant',
-                        '|',
+						'|',
+						'toggleAi',
+						'aiQuickActions',
+						'|',
                         'exportPdf',
                         'formatPainter',
                         'findAndReplace',
@@ -198,7 +201,10 @@ export default function CKEditorArea({
                 },
                 plugins: [
                     // Premium features
-                    AIAssistant,
+                    AIChat,
+                    AIEditorIntegration,
+                    AIQuickActions,
+                    AIReviewMode,
                     ExportPdf,
                     FormatPainter,
                     MultiLevelList,
@@ -270,9 +276,23 @@ export default function CKEditorArea({
                     Underline
                 ],
                 ai: {
-                    openAI: {
-                        requestHeaders: {
-                            Authorization: 'Bearer ' + AI_API_KEY
+                    container: {
+                        type: 'overlay',
+                        side: 'right',
+                        visibleByDefault: false
+                    },
+                    chat: {
+                        models: {},
+                        context: {
+                            document: {
+                                enabled: true
+                            },
+                            urls: {
+                                enabled: true
+                            },
+                            files: {
+                                enabled: true
+                            }
                         }
                     }
                 },
@@ -289,8 +309,8 @@ export default function CKEditorArea({
                         /* See: https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-pdf.html */
                         './export-style.css',
                         /* Export PDF needs access to stylesheets that style the content. */
-                        'https://cdn.ckeditor.com/ckeditor5/45.1.0/ckeditor5.css',
-                        'https://cdn.ckeditor.com/ckeditor5-premium-features/45.1.0/ckeditor5-premium-features.css'
+                        'https://cdn.ckeditor.com/ckeditor5/47.2.0/ckeditor5.css',
+                        'https://cdn.ckeditor.com/ckeditor5-premium-features/47.2.0/ckeditor5-premium-features.css'
                     ],
                     fileName: 'export-pdf-demo.pdf',
                     converterOptions: {
