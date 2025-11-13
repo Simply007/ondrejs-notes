@@ -1,0 +1,296 @@
+/* Static Showcase Styles - Optimized for 16:9 screen recording */
+
+.showcase-static-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.showcase-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.showcase-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.showcase-header p {
+  font-size: 1.1rem;
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* Editors Grid Layout */
+.editors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+  gap: 2rem;
+  max-width: 2400px;
+  margin: 0 auto;
+}
+
+/* For 2560x1440 displays - 2x3 layout */
+@media (min-width: 2000px) {
+  .editors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For smaller screens - single column */
+@media (max-width: 1200px) {
+  .editors-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual Editor Container */
+.editor-showcase-item {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensures no overflow from the card itself */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  max-height: 500px; /* Fixed max height to prevent card expansion */
+}
+
+.editor-showcase-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Editor Label */
+.editor-label {
+  background: linear-gradient(90deg, #4a90e2, #357abd);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editor-label::after {
+  content: "✓";
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Editor Wrapper */
+.editor-wrapper {
+  height: 450px;
+  overflow: hidden; /* Changed from auto to hidden - no scrollbar on wrapper */
+  padding: 1rem;
+  background: #fafafa;
+  position: relative;
+}
+
+/* Override editor-specific heights for consistency */
+.editor-wrapper .editor-container,
+.editor-wrapper .ck-editor,
+.editor-wrapper .tiptap-container,
+.editor-wrapper .tinymce-container,
+.editor-wrapper .lexical-container,
+.editor-wrapper .froala-container,
+.editor-wrapper .quill-container,
+.editor-wrapper .slate-container,
+.editor-wrapper .prosemirror-container,
+.editor-wrapper .remirror-container,
+.editor-wrapper .summernote-container {
+  height: 100% !important;
+  max-height: 418px !important; /* Reduced to account for padding */
+  border: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important; /* Prevent container scrolling */
+}
+
+/* Ensure proper scrolling ONLY for content areas */
+.editor-wrapper .ck-content,
+.editor-wrapper .ProseMirror,
+.editor-wrapper .ql-editor,
+.editor-wrapper .fr-element,
+.editor-wrapper .fr-view,
+.editor-wrapper [contenteditable="true"],
+.editor-wrapper .note-editable,
+.editor-wrapper textarea {
+  max-height: 350px !important; /* Height for content area only */
+  overflow-y: auto !important; /* Only content area scrolls */
+  overflow-x: hidden !important; /* No horizontal scroll */
+}
+
+/* Special rule for basic textarea */
+.editor-wrapper textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-family: inherit;
+  font-size: inherit;
+  resize: none;
+}
+
+/* Special handling for editors with toolbars */
+.editor-wrapper .ck-editor__main,
+.editor-wrapper .ql-container,
+.editor-wrapper .fr-box,
+.editor-wrapper .tox-edit-area {
+  overflow: hidden !important; /* Container doesn't scroll */
+}
+
+/* Ensure TinyMCE iframe content scrolls properly */
+.editor-wrapper .tox-edit-area__iframe {
+  height: 350px !important;
+}
+
+/* Hide unnecessary UI elements for cleaner screenshots */
+.editor-wrapper .ck-toolbar__grouped-dropdown,
+.editor-wrapper .ck-dropdown__button {
+  display: none;
+}
+
+/* Summernote specific adjustments */
+.editor-wrapper .note-editor {
+  border: none !important;
+}
+
+.editor-wrapper .note-toolbar {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* TinyMCE specific adjustments */
+.editor-wrapper .tox-tinymce {
+  border: none !important;
+}
+
+/* Quill specific adjustments */
+.editor-wrapper .ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid #ccc !important;
+  background: #f8f9fa !important;
+}
+
+.editor-wrapper .ql-container {
+  border: none !important;
+}
+
+/* Loading State */
+.editor-wrapper:empty::before {
+  content: "Loading editor...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #999;
+  font-style: italic;
+}
+
+/* Scrollbar Styling - Only for content areas */
+.editor-wrapper .ck-content::-webkit-scrollbar,
+.editor-wrapper .ProseMirror::-webkit-scrollbar,
+.editor-wrapper .ql-editor::-webkit-scrollbar,
+.editor-wrapper .fr-element::-webkit-scrollbar,
+.editor-wrapper .fr-view::-webkit-scrollbar,
+.editor-wrapper [contenteditable="true"]::-webkit-scrollbar,
+.editor-wrapper .note-editable::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.editor-wrapper .ck-content::-webkit-scrollbar-track,
+.editor-wrapper .ProseMirror::-webkit-scrollbar-track,
+.editor-wrapper .ql-editor::-webkit-scrollbar-track,
+.editor-wrapper .fr-element::-webkit-scrollbar-track,
+.editor-wrapper .fr-view::-webkit-scrollbar-track,
+.editor-wrapper [contenteditable="true"]::-webkit-scrollbar-track,
+.editor-wrapper .note-editable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.editor-wrapper .ck-content::-webkit-scrollbar-thumb,
+.editor-wrapper .ProseMirror::-webkit-scrollbar-thumb,
+.editor-wrapper .ql-editor::-webkit-scrollbar-thumb,
+.editor-wrapper .fr-element::-webkit-scrollbar-thumb,
+.editor-wrapper .fr-view::-webkit-scrollbar-thumb,
+.editor-wrapper [contenteditable="true"]::-webkit-scrollbar-thumb,
+.editor-wrapper .note-editable::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.editor-wrapper .ck-content::-webkit-scrollbar-thumb:hover,
+.editor-wrapper .ProseMirror::-webkit-scrollbar-thumb:hover,
+.editor-wrapper .ql-editor::-webkit-scrollbar-thumb:hover,
+.editor-wrapper .fr-element::-webkit-scrollbar-thumb:hover,
+.editor-wrapper .fr-view::-webkit-scrollbar-thumb:hover,
+.editor-wrapper [contenteditable="true"]::-webkit-scrollbar-thumb:hover,
+.editor-wrapper .note-editable::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Optimize for 720px blog display */
+@media (max-width: 768px) {
+  .showcase-static-container {
+    padding: 1rem;
+  }
+
+  .showcase-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .showcase-header p {
+    font-size: 1rem;
+  }
+
+  .editors-grid {
+    gap: 1rem;
+  }
+
+  .editor-showcase-item {
+    border-radius: 8px;
+  }
+
+  .editor-wrapper {
+    height: 350px;
+    padding: 0.75rem;
+  }
+
+  .editor-label {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Print/Export optimization */
+@media print {
+  .showcase-static-container {
+    background: white;
+  }
+
+  .showcase-header {
+    background: none;
+    color: black;
+  }
+
+  .editor-showcase-item {
+    break-inside: avoid;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+}

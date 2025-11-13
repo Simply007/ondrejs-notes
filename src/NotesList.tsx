@@ -40,7 +40,16 @@ export default function NotesList() {
     <div className="notes-list-container">
       <div className="notes-header">
         <h1>Notes</h1>
-        <button className="new-note-btn" onClick={handleNewNote}>New Note</button>
+        <div className="header-actions">
+          <button className="new-note-btn" onClick={handleNewNote}>New Note</button>
+          <button
+            className="showcase-btn"
+            onClick={() => navigate('/showcase')}
+            title="View all editors comparison"
+          >
+            Editor Showcase
+          </button>
+        </div>
       </div>
       <div className="notes-tiles">
         {notes.length === 0 && <p>No notes yet.</p>}
@@ -48,7 +57,7 @@ export default function NotesList() {
           <div className="note-tile" key={note.guid}>
             <div className="note-tile-content" onClick={() => navigate(`/note/${note.guid}`)}>
               <h2>{note.title || <em>(No Title)</em>}</h2>
-              <p className="note-preview" dangerouslySetInnerHTML={{__html: note.content.slice(0, 50) + '...'}}/>
+              <p className="note-preview" dangerouslySetInnerHTML={{__html: note.content ? note.content.slice(0, 50) + '...' : ''}}/>
             </div>
             <button className="delete-btn" onClick={() => handleDelete(note.guid)}>Delete</button>
           </div>

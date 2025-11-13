@@ -146,6 +146,7 @@ export default function CKEditorArea({
             ClassicEditor,
             editorConfig: {
                 toolbar: {
+                    shouldNotGroupWhenFull: true,
                     items: [
                         'undo',
                         'redo',
@@ -405,7 +406,7 @@ export default function CKEditorArea({
                 sourceEditing: {
                     allowCollaborationFeatures: true
                 },
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any
         };
     }, [cloud, isLayoutReady, content, documentId]);
@@ -496,7 +497,8 @@ export default function CKEditorArea({
 
                             // Check if there's a conflict between local content and collaborative content
                             if (content && collaborativeContent && content !== collaborativeContent && content.trim() !== '' && collaborativeContent.trim() !== '') {
-                                setHasConflict(true);
+                                // setHasConflict(true);
+                                handleConflictResolution(false)
                             }
                         }}
                         onChange={(_event, editor) => {
