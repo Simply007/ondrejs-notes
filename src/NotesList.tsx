@@ -37,7 +37,8 @@ export default function NotesList() {
   };
 
   return (
-    <div className="notes-list-container">
+    <div className="app-container">
+      <div className="notes-list-container">
       <div className="notes-header">
         <h1>Notes</h1>
         <div className="header-actions">
@@ -63,6 +64,7 @@ export default function NotesList() {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 } 

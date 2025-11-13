@@ -1,11 +1,13 @@
 /* Static Showcase Styles - Optimized for 16:9 screen recording */
 
 .showcase-static-container {
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
+  padding: 1.5rem 2rem;
   box-sizing: border-box;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
 }
 
 /* Header Section */
@@ -35,16 +37,25 @@
 /* Editors Grid Layout */
 .editors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-  gap: 2rem;
-  max-width: 2400px;
+  grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+  gap: 1.5rem;
+  max-width: 100%;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* For 2560x1440 displays - 2x3 layout */
+/* For 2560x1440 displays - optimized 2 column layout for 16:9 */
 @media (min-width: 2000px) {
   .editors-grid {
     grid-template-columns: repeat(2, 1fr);
+    max-width: calc(100vw - 4rem);
+  }
+}
+
+/* For ultra-wide displays - 3 column layout */
+@media (min-width: 3000px) {
+  .editors-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -64,7 +75,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  max-height: 500px; /* Fixed max height to prevent card expansion */
+  max-height: 550px; /* Increased to match new editor height */
 }
 
 .editor-showcase-item:hover {
@@ -95,7 +106,7 @@
 
 /* Editor Wrapper */
 .editor-wrapper {
-  height: 450px;
+  height: 500px; /* Increased height for better 16:9 utilization */
   overflow: hidden; /* Changed from auto to hidden - no scrollbar on wrapper */
   padding: 1rem;
   background: #fafafa;
@@ -115,7 +126,7 @@
 .editor-wrapper .remirror-container,
 .editor-wrapper .summernote-container {
   height: 100% !important;
-  max-height: 418px !important; /* Reduced to account for padding */
+  max-height: 468px !important; /* Adjusted for new wrapper height */
   border: none !important;
   box-shadow: none !important;
   overflow: hidden !important; /* Prevent container scrolling */
@@ -130,7 +141,7 @@
 .editor-wrapper [contenteditable="true"],
 .editor-wrapper .note-editable,
 .editor-wrapper textarea {
-  max-height: 350px !important; /* Height for content area only */
+  max-height: 400px !important; /* Increased for better content display */
   overflow-y: auto !important; /* Only content area scrolls */
   overflow-x: hidden !important; /* No horizontal scroll */
 }

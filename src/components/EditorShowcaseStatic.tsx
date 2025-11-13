@@ -100,12 +100,12 @@ const EditorShowcaseStatic: React.FC = () => {
 
   const editors = [
     { name: 'CKEditor 5', component: CKEditorArea },
-    { name: 'TipTap', component: TipTapArea },
     { name: 'TinyMCE', component: TinyMCEArea },
-    { name: 'Lexical', component: LexicalArea },
     { name: 'Quill', component: QuillArea },
     { name: 'Slate', component: SlateArea },
+    { name: 'Lexical', component: LexicalArea },
     { name: 'ProseMirror', component: ProseMirrorArea },
+    { name: 'TipTap', component: TipTapArea },
     { name: 'Remirror', component: RemirrorArea },
     { name: 'Froala', component: FroalaArea },
     { name: 'Summernote', component: SummernoteArea }

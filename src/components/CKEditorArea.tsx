@@ -146,7 +146,6 @@ export default function CKEditorArea({
             ClassicEditor,
             editorConfig: {
                 toolbar: {
-                    shouldNotGroupWhenFull: true,
                     items: [
                         'undo',
                         'redo',
@@ -195,7 +194,7 @@ export default function CKEditorArea({
                         'outdent',
                         'indent'
                     ],
-                    shouldNotGroupWhenFull: true
+                    shouldNotGroupWhenFull: false
                 },
                 plugins: [
                     // Premium features

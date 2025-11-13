@@ -54,7 +54,8 @@ export default function NoteDetail() {
   if (!note) return null;
 
   return (
-    <div className="note-detail-container">
+    <div className="app-container">
+      <div className="note-detail-container">
       <button className="back-btn" onClick={() => navigate('/')}>Back</button>
       <div className="note-detail-form">
         <input
@@ -75,6 +76,7 @@ export default function NoteDetail() {
           <small>Last modified: {new Date(note.modified).toLocaleString()}</small>
         </div>
       </div>
+    </div>
     </div>
   );
 } 
