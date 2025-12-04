@@ -1,9 +1,17 @@
-#root {
+/* Default root styles - will be overridden for showcase */
+
+/* Container for notes pages only */
+.app-container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
-  color: black;
+}
+
+/* Full width container for showcase */
+.showcase-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .logo {
@@ -53,7 +61,17 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .new-note-btn {
   background: #fbbc04;
   color: #222;
@@ -67,6 +85,25 @@
 }
 .new-note-btn:hover {
   background: #ffe082;
+}
+
+.showcase-btn {
+  background: #6522C9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.showcase-btn:hover {
+  background: #BA23CA;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 .notes-tiles {
   display: grid;
